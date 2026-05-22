@@ -6,22 +6,22 @@
   <title>Contrarian — The Debate Game</title>
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text y='79' x='50' text-anchor='middle' font-size='72' font-family='Arial Black,sans-serif' font-weight='900' fill='%23fff'>C</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><clipPath id='fl'><rect x='0' y='0' width='100' height='200'/></clipPath><clipPath id='fr'><rect x='100' y='0' width='100' height='200'/></clipPath></defs><circle cx='100' cy='100' r='90' fill='%23111' clip-path='url(%23fl)'/><circle cx='100' cy='100' r='90' fill='%23fff' clip-path='url(%23fr)'/><circle cx='100' cy='100' r='90' fill='none' stroke='%23555' stroke-width='2'/><circle cx='62' cy='100' r='14' fill='%23fff'/></svg>">
 
   <!-- SEO -->
-  <meta name="description" content="A bilingual debate game. You get a random topic and a random stance — argue it, even if you don't believe it. Convince the room.">
+  <meta name="description" content="A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter. Play Light with everyday topics, or go Radical with the ones people actually fight about.">
   <meta name="theme-color" content="#000000">
 
   <!-- Open Graph (WhatsApp, Facebook, iMessage) -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://contrariangame.com">
   <meta property="og:title"       content="Contrarian — The Debate Game">
-  <meta property="og:description" content="You get a topic. You get a stance. Argue it — even if it's not yours. It doesn't matter if you believe it. It matters if you convince them.">
+  <meta property="og:description" content="A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter.">
 
   <!-- Twitter / X -->
   <meta name="twitter:card"        content="summary">
   <meta name="twitter:title"       content="Contrarian — The Debate Game">
-  <meta name="twitter:description" content="You get a topic. You get a stance. Argue it — even if it's not yours.">
+  <meta name="twitter:description" content="A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -252,6 +252,9 @@
     #screen-landing { justify-content: space-between; }
     .landing-top { padding-top: 0.5rem; }
     .landing-mid { padding: 2.5rem 0 1.5rem; }
+    .landing-desc p { font-size: 0.85rem; font-weight: 400; line-height: 1.65; color: var(--gray); }
+    #land-credit { color: var(--gray); text-decoration: none; transition: color 0.2s ease; }
+    #land-credit:hover { color: var(--white); }
     .landing-bottom { }
 
     /* ── PLAYERS ── */
@@ -535,7 +538,19 @@
 
 <!-- TOP BAR -->
 <div id="topbar">
-  <button id="topbar-home" onclick="goHome()">CONTRARIAN</button>
+  <button id="topbar-home" onclick="goHome()" style="display:flex;align-items:center;gap:0.5rem;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="22" height="22" style="flex-shrink:0">
+      <defs>
+        <clipPath id="tbl"><rect x="0" y="0" width="100" height="200"/></clipPath>
+        <clipPath id="tbr"><rect x="100" y="0" width="100" height="200"/></clipPath>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="#111111" clip-path="url(#tbl)"/>
+      <circle cx="100" cy="100" r="90" fill="#ffffff" clip-path="url(#tbr)"/>
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#ffffff" stroke-width="4"/>
+      <circle cx="62" cy="100" r="14" fill="#ffffff"/>
+    </svg>
+    CONTRARIAN
+  </button>
   <div class="topbar-controls">
     <button class="ctrl-btn" id="lang-btn" onclick="toggleLang()">ES</button>
     <button class="ctrl-btn" id="mute-btn" onclick="toggleMute()">MUTE</button>
@@ -549,22 +564,29 @@
 ═══════════════════════════════════════════ -->
 <section class="screen active" id="screen-landing">
   <div class="landing-top">
-    <p class="t-quote" id="land-quote">"The test of a first-rate intelligence is the ability to hold two opposed ideas in mind at the same time and still retain the ability to function."</p>
+    <p class="t-quote" id="land-quote">The test of a first-rate intelligence is the ability to hold two opposed ideas in mind at the same time.</p>
     <p class="t-micro gray mt-1">— F. Scott Fitzgerald</p>
   </div>
 
   <div class="landing-mid">
     <div class="t-game-title">CONTRARIAN</div>
     <div class="tagline-block mt-3">
-      <p class="tagline-primary" id="land-tagline-1">It doesn't matter if you believe it.<br>It matters if you convince them.</p>
-      <p class="tagline-secondary" id="land-tagline-2">No importa si lo crees.<br>Importa si convences.</p>
+      <p class="tagline-primary" id="land-tagline-1"></p>
     </div>
   </div>
 
-  <div class="landing-bottom stack">
+  <div class="landing-desc mt-2">
+    <p id="land-desc"></p>
+  </div>
+
+  <div class="landing-bottom stack mt-4">
     <button class="btn btn-fill" id="btn-light" onclick="selectMode('light')">LIGHT MODE</button>
     <button class="btn btn-outline" id="btn-radical" onclick="selectMode('radical')">RADICAL MODE</button>
     <button class="btn-ghost" id="btn-players" onclick="goToPlayers()">+ Add players</button>
+  </div>
+
+  <div style="margin-top:1.5rem; text-align:center;">
+    <a href="https://www.instagram.com/sairomero_/" target="_blank" rel="noopener" id="land-credit" style="font-size:0.7rem; letter-spacing:0.08em;">Created by Sairy Romero</a>
   </div>
 </section>
 
@@ -638,8 +660,7 @@
   </div>
 
   <div class="round-tagline">
-    <p id="rnd-tagline-a">It doesn't matter if you believe it. It matters if you convince them.</p>
-    <p id="rnd-tagline-b">No importa si lo crees. Importa si convences.</p>
+    <p id="rnd-tagline-a"></p>
   </div>
 </section>
 
@@ -916,17 +937,17 @@ const RADICAL_TOPICS = [
   { en:'SPACE COLONIZATION',                 es:'LA COLONIZACIÓN DEL ESPACIO' },
   { en:'LEAVING EARTH BEHIND',               es:'ABANDONAR LA TIERRA' },
   { en:'COLONIZING MARS',                    es:'COLONIZAR MARTE' },
-  { en:'CRYPTOCURRENCY',                     es:'LAS CRIPTOMONEDAS' },
-  { en:'DECENTRALIZED FINANCE',              es:'LAS FINANZAS DESCENTRALIZADAS' },
-  { en:'NFTs',                               es:'LOS NFTS' },
-  { en:'SOCIAL CREDIT SYSTEMS',              es:'LOS SISTEMAS DE CRÉDITO SOCIAL' },
+  { en:'INTERNET ANONYMITY SHOULD BE ILLEGAL', es:'EL ANONIMATO EN INTERNET DEBERÍA SER ILEGAL' },
+  { en:'THE RIGHT TO BE FORGOTTEN ONLINE',   es:'EL DERECHO AL OLVIDO DIGITAL' },
+  { en:'WHETHER ART HAS OBJECTIVE VALUE',    es:'SI EL ARTE TIENE VALOR OBJETIVO' },
+  { en:'MASS SURVEILLANCE AS SAFETY',        es:'LA VIGILANCIA MASIVA COMO SEGURIDAD' },
   { en:'UNIVERSAL HEALTHCARE',               es:'LA SALUD UNIVERSAL' },
   { en:'PRIVATIZED HEALTHCARE',              es:'LA SALUD PRIVADA' },
   { en:'PHARMACEUTICAL PATENTS',             es:'LAS PATENTES FARMACÉUTICAS' },
   { en:'PSYCHEDELICS AS MEDICINE',           es:'LOS PSICODÉLICOS COMO MEDICINA' },
   { en:'DECRIMINALIZATION OF ALL DRUGS',     es:'LA DESPENALIZACIÓN DE TODAS LAS DROGAS' },
   { en:'THE PRISON SYSTEM',                  es:'EL SISTEMA PENITENCIARIO' },
-  { en:'RESTORATIVE JUSTICE',                es:'LA JUSTICIA RESTAURATIVA' },
+  { en:'WHETHER PRISONS SHOULD EXIST',       es:'SI LAS CÁRCELES DEBEN EXISTIR' },
   { en:'THE POLICE',                         es:'LA POLICÍA' },
   { en:'DEFUNDING THE POLICE',               es:'RECORTAR EL PRESUPUESTO POLICIAL' },
   { en:'GUN RIGHTS',                         es:'EL DERECHO A PORTAR ARMAS' },
@@ -948,9 +969,11 @@ const FREE_ROUNDS = 10;
 
 const COPY = {
   en: {
-    quote: '"The test of a first-rate intelligence is the ability to hold two opposed ideas in mind at the same time and still retain the ability to function."',
+    quote: 'The test of a first-rate intelligence is the ability to hold two opposed ideas in mind at the same time.',
     tagline1: "It doesn't matter if you believe it.\nIt matters if you convince them.",
     tagline2: "No importa si lo crees.\nImporta si convences.",
+    landDesc: "A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter. Play Light with everyday topics, or go Radical with the ones people actually fight about.",
+    credit: "Created by Sairy Romero",
     lightMode: 'LIGHT MODE',
     radicalMode: 'RADICAL MODE',
     addPlayers: '+ Add players',
@@ -1002,9 +1025,11 @@ const COPY = {
     sessionResult: (c, t) => `${c} of ${t} rounds convinced`,
   },
   es: {
-    quote: '"La prueba de una inteligencia de primer nivel es la capacidad de sostener dos ideas opuestas en la mente al mismo tiempo y aun así conservar la capacidad de funcionar."',
+    quote: 'La prueba de una inteligencia de primer nivel es la capacidad de sostener dos ideas opuestas en la mente al mismo tiempo.',
     tagline1: "No importa si lo crees.\nImporta si convences.",
     tagline2: "It doesn't matter if you believe it.\nIt matters if you convince them.",
+    landDesc: "Un juego de debate donde no se trata de tener razón. Se trata de convencer. Los temas son aleatorios. Las posturas son aleatorias. Tus creencias reales no importan. Juega en modo Light con temas cotidianos, o en modo Radical con los que de verdad dividen.",
+    credit: "Creado por Sairy Romero",
     lightMode: 'MODO LIGHT',
     radicalMode: 'MODO RADICAL',
     addPlayers: '+ Agregar jugadores',
@@ -1200,12 +1225,14 @@ function refreshCopy() {
   // Landing
   setText('land-quote',    c('quote'));
   setText('land-tagline-1', c('tagline1'));
-  setText('land-tagline-2', c('tagline2'));
+  setText('land-desc',     c('landDesc'));
+  setText('land-credit',   c('credit'));
   setText('btn-light',     c('lightMode'));
   setText('btn-radical',   c('radicalMode'));
   setText('btn-players',   c('addPlayers'));
   // Players
   setText('pl-title',      c('plTitle'));
+  renderPlayerRows();
   setText('pl-sub',        c('plSub'));
   setText('btn-add-pl',    c('addPlayer'));
   setText('btn-confirm-pl',c('confirm'));
@@ -1226,7 +1253,6 @@ function refreshCopy() {
   setText('btn-done',         c('done'));
   setText('btn-skip',         c('skip'));
   setText('rnd-tagline-a',    c('taglineA'));
-  setText('rnd-tagline-b',    c('taglineB'));
   if (G.currentTopic)  setText('round-topic-text',  G.currentTopic[G.lang]);
   if (G.currentStance) setText('round-stance-text', G.currentStance[G.lang]);
   // Vote
@@ -1295,7 +1321,7 @@ function renderPlayerRows() {
     div.className = 'player-row';
     const inp = document.createElement('input');
     inp.type = 'text';
-    inp.placeholder = `Player ${i + 1}`;
+    inp.placeholder = `${G.lang === 'es' ? 'Jugador' : 'Player'} ${i + 1}`;
     inp.value = val;
     inp.oninput = () => { _playerRows[i] = inp.value; };
     div.appendChild(inp);
