@@ -841,8 +841,7 @@
 ═══════════════════════════════════════════ -->
 <section class="screen" id="screen-paywall">
   <div class="paywall-top">
-    <p class="t-label" id="pw-rounds-label">3 FREE ROUNDS USED</p>
-    <h2 class="mt-2" id="pw-headline">KEEP<br>PLAYING.</h2>
+    <h2 id="pw-headline">KEEP<br>PLAYING.</h2>
     <p class="t-medium mt-2" id="pw-sub">Unlock unlimited rounds for your group.</p>
   </div>
 
@@ -1669,8 +1668,6 @@ function refreshCopy() {
   setText('btn-next-rnd',  c('nextRound'));
   setText('btn-end-sess',  c('endSession'));
   // Paywall
-  const used = getRounds(G.mode || 'light');
-  setText('pw-rounds-label',   c('pwRounds', used));
   setText('pw-headline',       c('pwHeadline'));
   setText('pw-sub',            c('pwSub'));
   setText('pw-24h-title',      c('pw24hTitle'));
@@ -2072,8 +2069,6 @@ function endSession() {
 ═══════════════════════════════════════════ */
 
 function showPaywall() {
-  const used = getRounds(G.mode || 'light');
-  setText('pw-rounds-label', c('pwRounds', used));
   setText('pw-headline',     c('pwHeadline'));
   setText('pw-sub',          c('pwSub'));
   setText('pw-24h-title',    c('pw24hTitle'));
