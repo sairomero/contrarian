@@ -708,6 +708,7 @@
     <button class="btn btn-outline" id="btn-radical" onclick="selectMode('radical')">RADICAL MODE</button>
     <button class="btn btn-outline" id="btn-drama" onclick="selectMode('drama')">DRAMA MODE</button>
     <button class="btn-ghost" id="btn-players" onclick="goToPlayers()">+ Add players</button>
+    <button class="btn-ghost" id="btn-make-game" onclick="showPaywall()">Make your own game</button>
   </div>
 
   <button class="btn-ghost" id="btn-mytopics" onclick="showMyTopics()" style="display:none; margin-top:0.75rem; font-size:0.7rem; letter-spacing:0.15em;">MY TOPICS</button>
@@ -1277,6 +1278,7 @@ const COPY = {
     ageYes: "YES, I'M 18+",
     ageNo: 'No — back to home',
     addPlayers: '+ Add players',
+    makeYourGame: 'Make your own game',
     plTitle: 'PLAYERS',
     plSub: 'Enter names to track who convinces the most',
     addPlayer: '+ Add player',
@@ -1370,6 +1372,7 @@ const COPY = {
     ageYes: 'SÍ, TENGO 18+',
     ageNo: 'No — volver al inicio',
     addPlayers: '+ Agregar jugadores',
+    makeYourGame: 'Haz tu propio juego',
     plTitle: 'JUGADORES',
     plSub: 'Ingresa nombres para llevar el puntaje',
     addPlayer: '+ Agregar jugador',
@@ -1611,6 +1614,7 @@ function refreshCopy() {
   setText('btn-radical',       c('radicalMode'));
   setText('btn-drama',         c('dramaMode'));
   setText('btn-players',       c('addPlayers'));
+  setText('btn-make-game',     c('makeYourGame'));
   // Players
   setText('pl-title',      c('plTitle'));
   renderPlayerRows();
