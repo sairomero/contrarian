@@ -891,7 +891,7 @@
   <p class="ct-body"  id="ct-body"></p>
   <p class="ct-close" id="ct-close"></p>
   <div class="stack mt-4">
-    <a class="btn btn-fill" id="ct-cta" href="#" target="_blank" rel="noopener">GET 1 MONTH · $45 USD</a>
+    <button class="btn btn-fill" id="ct-cta" onclick="paywallClickMonthly()">GET 1 MONTH · $45 USD</button>
     <button class="btn-ghost" id="ct-back" onclick="goHome()">← Back</button>
   </div>
 </section>
@@ -911,7 +911,7 @@
       <div>
         <span class="price-main">$10 USD</span>
       </div>
-      <button class="btn btn-fill price-btn" id="btn-pw-24h" onclick="paywallClick()">GET 24H PASS</button>
+      <button class="btn btn-fill price-btn" id="btn-pw-24h" onclick="paywallClick('day')">GET DAY PASS</button>
     </div>
 
     <div class="price-card">
@@ -919,7 +919,7 @@
       <div>
         <span class="price-main">$25 USD</span>
       </div>
-      <button class="btn btn-fill price-btn" id="btn-pw-weekly" onclick="paywallClick()">GET WEEKLY PASS</button>
+      <button class="btn btn-fill price-btn" id="btn-pw-weekly" onclick="paywallClick('week')">GET 1 WEEK</button>
     </div>
 
     <div class="price-card">
@@ -1366,7 +1366,9 @@ const STANCE_MAP = {
 };
 
 const FREE_ROUNDS = 10;
-const STRIPE_MONTHLY_URL = ''; // swap in Stripe Payment Link once live
+const STRIPE_DAY_URL     = 'https://buy.stripe.com/dRmeVc0va0SD9IF9z95kk00';
+const STRIPE_WEEK_URL    = 'https://buy.stripe.com/8x2bJ06Ty1WH3kh6mX5kk01';
+const STRIPE_MONTHLY_URL = 'https://buy.stripe.com/bJe00i91G58T0854eP5kk02';
 
 /* ══════════════════════════════════════════
    TRANSLATIONS
@@ -1611,7 +1613,13 @@ function getRounds(mode)     { return parseInt(localStorage.getItem('cg_rounds_'
 function addRound(mode)      { const n = getRounds(mode) + 1; localStorage.setItem('cg_rounds_' + mode, n); return n; }
 function resetRounds(mode)   { localStorage.setItem('cg_rounds_' + mode, '0'); }
 
-function isMonthly()         { return !!localStorage.getItem('cg_monthly'); }
+function isMonthly()  { return !!localStorage.getItem('cg_monthly'); }
+function isDayPass()  { return parseInt(localStorage.getItem('cg_day_until')  || '0') > Date.now(); }
+function isWeekPass() { return parseInt(localStorage.getItem('cg_week_until') || '0') > Date.now(); }
+function isPaid()     { return isMonthly() || isWeekPass() || isDayPass(); }
+
+function setDayPass()  { localStorage.setItem('cg_day_until',  Date.now() + 24 * 60 * 60 * 1000); }
+function setWeekPass() { localStorage.setItem('cg_week_until', Date.now() + 7  * 24 * 60 * 60 * 1000); }
 function setMonthly()        {
   localStorage.setItem('cg_monthly', Date.now());
   _sb.auth.getUser().then(({ data: { user } }) => {
@@ -2099,7 +2107,7 @@ function skipPlayers() {
 
 function selectMode(mode) {
   G.mode = mode;
-  if (getRounds(mode) >= FREE_ROUNDS) { showPaywall(); return; }
+  if (getRounds(mode) >= FREE_ROUNDS && !isPaid()) { showPaywall(); return; }
   if (mode === 'light') { beginGame('easy', 60); return; }
   showDifficultyScreen();
 }
@@ -2326,7 +2334,7 @@ function skipRound() {
   playSkip();
   const count = addRound(G.mode);
 
-  if (count >= FREE_ROUNDS) {
+  if (count >= FREE_ROUNDS && !isPaid()) {
     showPaywall();
     return;
   }
@@ -2374,7 +2382,7 @@ function nextRound() {
   if (G.players.length > 0) G.playerIdx = (G.playerIdx + 1) % G.players.length;
 
   const count = getRounds(G.mode);
-  if (count >= FREE_ROUNDS) {
+  if (count >= FREE_ROUNDS && !isPaid()) {
     showPaywall();
     return;
   }
@@ -2432,13 +2440,11 @@ function showPaywall() {
   showScreen('screen-paywall');
 }
 
-function paywallClick() {
+function paywallClick(type) {
   _sb.auth.getUser().then(({ data: { user } }) => {
-    if (!user) { requireAuth(() => paywallClick()); return; }
-    const msg = G.lang === 'es'
-      ? 'Pago en camino — por ahora, gracias por jugar. 🖤'
-      : 'Payment coming soon — thanks for playing. 🖤';
-    alert(msg);
+    if (!user) { requireAuth(() => paywallClick(type)); return; }
+    const url = type === 'week' ? STRIPE_WEEK_URL : STRIPE_DAY_URL;
+    window.location.href = url;
   });
 }
 
@@ -2458,8 +2464,7 @@ function showCustomScreen() {
 function paywallClickMonthly() {
   _sb.auth.getUser().then(({ data: { user } }) => {
     if (!user) { requireAuth(() => paywallClickMonthly()); return; }
-    setMonthly();
-    showMyTopics();
+    window.location.href = STRIPE_MONTHLY_URL;
   });
 }
 
@@ -2661,7 +2666,18 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshCopy();
   showScreen('screen-landing');
   syncFromSupabase();
+  checkPaymentReturn();
 });
+
+function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const unlocked = params.get('unlocked');
+  if (!unlocked) return;
+  window.history.replaceState({}, '', window.location.pathname);
+  if (unlocked === 'day')   setDayPass();
+  if (unlocked === 'week')  setWeekPass();
+  if (unlocked === 'month') { setMonthly(); updateLandingMonthlyBtn(); }
+}
 </script>
 </body>
 </html>
