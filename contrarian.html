@@ -511,6 +511,23 @@
     .price-btn { margin-top: 0.875rem; }
 
     /* ── SCOREBOARD ── */
+    #sb-winner { margin-bottom: 1.5rem; }
+    #sb-winner-name {
+      font-size: clamp(2.5rem, 14vw, 6rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      word-break: break-word;
+    }
+    #sb-winner-line {
+      font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+      font-weight: 400;
+      color: var(--gray);
+      margin-top: 0.625rem;
+      line-height: 1.5;
+    }
+
     .score-row {
       display: flex;
       align-items: center;
@@ -895,6 +912,10 @@
     <p class="t-small gray mt-1" id="sb-sub">Who convinced the most?</p>
   </div>
   <hr>
+  <div id="sb-winner" class="hidden">
+    <div id="sb-winner-name"></div>
+    <p id="sb-winner-line"></p>
+  </div>
   <div id="sb-list"></div>
   <div class="spacer"></div>
   <button class="btn btn-fill mt-4" id="btn-sb-home" onclick="goHome()">PLAY AGAIN</button>
@@ -1309,6 +1330,18 @@ const COPY = {
       expert:       { title: 'EXPERT',       time: '3 MINUTES', desc: 'Maximum exposure. No escape.' },
     },
     sessionResult: (c, t) => `${c} of ${t} rounds convinced`,
+    winnerLines: [
+      "Most convincing person in the room. Terrifying.",
+      "You didn't need to believe it. They just needed to.",
+      "Outstanding performance from someone who was making it up.",
+      "You are dangerously good at this.",
+      "The group has spoken. They trusted you most.",
+      "First place. Nobody knows what you actually stand for.",
+      "Somehow, they believed you. Every time.",
+      "You won. The others will not forget this.",
+      "This is what it looks like when someone has no shame. Congratulations.",
+      "You argued for things you don't believe. And it worked. Incredible.",
+    ],
   },
   es: {
     quote: 'La prueba de una inteligencia de primer nivel es la capacidad de sostener dos ideas opuestas en la mente al mismo tiempo.',
@@ -1388,6 +1421,18 @@ const COPY = {
       expert:       { title: 'EXPERTO',      time: '3 MINUTOS', desc: 'Exposición máxima. Sin escape.' },
     },
     sessionResult: (c, t) => `${c} de ${t} rondas convencidas`,
+    winnerLines: [
+      "La persona más convincente de la sala. Aterrador.",
+      "No necesitabas creerlo. Solo necesitabas que ellos sí.",
+      "Actuación destacada de alguien que se lo estaba inventando.",
+      "Eres peligrosamente bueno en esto.",
+      "El grupo ha hablado. Te creyeron más a ti.",
+      "Primer lugar. Nadie sabe realmente en qué crees.",
+      "No sé cómo lo hiciste, pero funcionó.",
+      "Ganaste. Los demás no lo olvidarán.",
+      "Esto es lo que pasa cuando alguien no tiene vergüenza. Felicidades.",
+      "Defendiste cosas en las que no crees. Y funcionó. Increíble.",
+    ],
   },
 };
 
@@ -2024,7 +2069,12 @@ function showScoreboard() {
   const list = document.getElementById('sb-list');
   list.innerHTML = '';
 
+  const winnerEl   = document.getElementById('sb-winner');
+  const winnerName = document.getElementById('sb-winner-name');
+  const winnerLine = document.getElementById('sb-winner-line');
+
   if (G.players.length === 0) {
+    winnerEl.classList.add('hidden');
     const convinced = G.sessionRounds.filter(r => r.convinced).length;
     const total = G.sessionRounds.length;
     const row = document.createElement('div');
@@ -2040,6 +2090,12 @@ function showScoreboard() {
     const sorted = [...G.players].sort((a, b) =>
       (G.scores[b]?.convinced || 0) - (G.scores[a]?.convinced || 0)
     );
+    const winner = sorted[0];
+    const lines  = c('winnerLines');
+    winnerName.textContent = winner.toUpperCase();
+    winnerLine.textContent = lines[Math.floor(Math.random() * lines.length)];
+    winnerEl.classList.remove('hidden');
+
     sorted.forEach((name, i) => {
       const sc = G.scores[name] || { convinced: 0, rounds: 0 };
       const row = document.createElement('div');
