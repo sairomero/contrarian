@@ -684,6 +684,8 @@
   <div class="landing-bottom stack mt-4">
     <button class="btn btn-fill" id="btn-light" onclick="selectMode('light')">LIGHT MODE</button>
     <button class="btn btn-outline" id="btn-radical" onclick="selectMode('radical')">RADICAL MODE</button>
+    <button class="btn btn-outline" id="btn-drama" onclick="selectMode('drama')">DRAMA MODE</button>
+    <p class="t-label center" id="drama-adult-note" style="color:var(--gray);font-size:0.6rem;margin-top:-0.1rem;"></p>
     <button class="btn-ghost" id="btn-players" onclick="goToPlayers()">+ Add players</button>
   </div>
 
@@ -837,6 +839,22 @@
 </section>
 
 <!-- ══════════════════════════════════════════
+     AGE GATE
+═══════════════════════════════════════════ -->
+<section class="screen" id="screen-agegate" style="justify-content:space-between;">
+  <div class="spacer"></div>
+  <div>
+    <h2 class="t-large" id="age-headline">DRAMA MODE</h2>
+    <p class="t-medium mt-3" id="age-question" style="white-space:pre-line;line-height:1.45;"></p>
+  </div>
+  <div class="stack mt-6">
+    <button class="btn btn-fill" id="age-yes" onclick="agegateYes()">YES, I'M 18+</button>
+    <button class="btn-ghost" id="age-no" onclick="goHome()">No — back to home</button>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ══════════════════════════════════════════
      MY TOPICS
 ═══════════════════════════════════════════ -->
 <section class="screen" id="screen-mytopics">
@@ -866,6 +884,7 @@
       <div class="form-mode-btns">
         <button class="form-mode-btn active" id="fmode-light"   onclick="selectFormMode('light')">LIGHT</button>
         <button class="form-mode-btn"        id="fmode-radical" onclick="selectFormMode('radical')">RADICAL</button>
+        <button class="form-mode-btn"        id="fmode-drama"   onclick="selectFormMode('drama')">DRAMA</button>
       </div>
       <div class="form-actions">
         <button class="btn btn-fill"    id="mt-save-btn"   onclick="saveNewTopic()">SAVE</button>
@@ -1109,6 +1128,108 @@ const RADICAL_TOPICS = [
   { en: "The end of nation-states",               es: "El fin de los estados-nación",                    difficultStance: "for",           weight: 65 },
 ];
 
+const DRAMA_TOPICS = [
+  { en: "Ghosting someone",                              es: "Ghostear a alguien",                                    difficultStance: "defend", weight: 70 },
+  { en: "First date silence",                            es: "El silencio en una primera cita",                       difficultStance: "defend", weight: 75 },
+  { en: "Falling for your best friend",                  es: "Enamorarse del mejor amigo",                            difficultStance: "attack", weight: 65 },
+  { en: "Sliding into DMs",                              es: "Escribirle a alguien por DM",                           difficultStance: "attack", weight: 65 },
+  { en: "Matching on dating apps",                       es: "Hacer match en apps",                                   difficultStance: "attack", weight: 65 },
+  { en: "Texting your ex",                               es: "Escribirle a tu ex",                                    difficultStance: "defend", weight: 70 },
+  { en: "Reading your partner's phone",                  es: "Leer el teléfono de tu pareja",                         difficultStance: "defend", weight: 75 },
+  { en: "Love at first sight",                           es: "El amor a primera vista",                               difficultStance: "attack", weight: 65 },
+  { en: "Long distance relationships",                   es: "Las relaciones a distancia",                            difficultStance: "defend", weight: 65 },
+  { en: "Age gap relationships",                         es: "Las relaciones con diferencia de edad",                 difficultStance: "defend", weight: 65 },
+  { en: "Staying friends with your ex",                  es: "Seguir siendo amigos de tu ex",                         difficultStance: "defend", weight: 65 },
+  { en: "Jealousy in relationships",                     es: "Los celos en una relación",                             difficultStance: "defend", weight: 70 },
+  { en: "Playing hard to get",                           es: "Hacerse el difícil",                                    difficultStance: "defend", weight: 70 },
+  { en: "Telling someone you like them first",           es: "Declararse primero",                                    difficultStance: "attack", weight: 65 },
+  { en: "Couple nicknames",                              es: "Los apodos de pareja",                                  difficultStance: "attack", weight: 65 },
+  { en: "PDA",                                           es: "Las muestras de afecto en público",                     difficultStance: "attack", weight: 65 },
+  { en: "Proposing in public",                           es: "Proponer matrimonio en público",                        difficultStance: "attack", weight: 70 },
+  { en: "Destination weddings",                          es: "Las bodas de destino",                                  difficultStance: "attack", weight: 70 },
+  { en: "Open relationships",                            es: "Las relaciones abiertas",                               difficultStance: "attack", weight: 60 },
+  { en: "Dating multiple people at once",                es: "Salir con varias personas a la vez",                    difficultStance: "defend", weight: 65 },
+  { en: "Splitting the bill on a date",                  es: "Dividir la cuenta en una cita",                         difficultStance: "attack", weight: 65 },
+  { en: "Meeting the parents early",                     es: "Conocer a los padres pronto",                           difficultStance: "defend", weight: 70 },
+  { en: "Moving in together quickly",                    es: "Mudarse juntos rápido",                                 difficultStance: "defend", weight: 65 },
+  { en: "Couples who share everything online",           es: "Las parejas que comparten todo en redes",               difficultStance: "defend", weight: 75 },
+  { en: "Staying together for the kids",                 es: "Quedarse juntos por los hijos",                         difficultStance: "defend", weight: 70 },
+  { en: "Marrying your high school sweetheart",          es: "Casarse con el novio del colegio",                      difficultStance: "defend", weight: 65 },
+  { en: "Having a crush on someone unavailable",         es: "Enamorarse de alguien no disponible",                   difficultStance: "defend", weight: 65 },
+  { en: "Flirting with no intention",                    es: "Coquetear sin intención",                               difficultStance: "defend", weight: 70 },
+  { en: "Blind dates",                                   es: "Las citas a ciegas",                                    difficultStance: "defend", weight: 65 },
+  { en: "Speed dating",                                  es: "Las citas rápidas",                                     difficultStance: "defend", weight: 65 },
+  { en: "Falling in love with a coworker",               es: "Enamorarse de un compañero de trabajo",                 difficultStance: "defend", weight: 70 },
+  { en: "Dating your friend's ex",                       es: "Salir con el ex de tu amigo",                           difficultStance: "defend", weight: 75 },
+  { en: "Marrying for money",                            es: "Casarse por dinero",                                    difficultStance: "defend", weight: 80 },
+  { en: "Prenuptial agreements",                         es: "Los acuerdos prenupciales",                             difficultStance: "attack", weight: 65 },
+  { en: "Staying in a loveless marriage",                es: "Quedarse en un matrimonio sin amor",                    difficultStance: "defend", weight: 75 },
+  { en: "Divorce",                                       es: "El divorcio",                                           difficultStance: "attack", weight: 65 },
+  { en: "Second marriages",                              es: "Los segundos matrimonios",                              difficultStance: "attack", weight: 60 },
+  { en: "Having a type",                                 es: "Tener un tipo de persona",                              difficultStance: "attack", weight: 65 },
+  { en: "Changing for a partner",                        es: "Cambiar por tu pareja",                                 difficultStance: "defend", weight: 70 },
+  { en: "Ultimatums in relationships",                   es: "Los ultimátums en una relación",                        difficultStance: "defend", weight: 70 },
+  { en: "Couples therapy",                               es: "La terapia de pareja",                                  difficultStance: "attack", weight: 65 },
+  { en: "Taking a break in a relationship",              es: "Tomarse un descanso en una relación",                   difficultStance: "defend", weight: 65 },
+  { en: "Rekindling an old flame",                       es: "Retomar una relación pasada",                           difficultStance: "defend", weight: 65 },
+  { en: "Confessing to cheating",                        es: "Confesar una infidelidad",                              difficultStance: "attack", weight: 65 },
+  { en: "Emotional cheating",                            es: "La infidelidad emocional",                              difficultStance: "defend", weight: 70 },
+  { en: "Forgiving infidelity",                          es: "Perdonar una infidelidad",                              difficultStance: "defend", weight: 65 },
+  { en: "Keeping secrets from your partner",             es: "Guardar secretos a tu pareja",                          difficultStance: "defend", weight: 70 },
+  { en: "White lies in relationships",                   es: "Las mentiras blancas en pareja",                        difficultStance: "defend", weight: 65 },
+  { en: "Saying I love you first",                       es: "Decir te amo primero",                                  difficultStance: "attack", weight: 65 },
+  { en: "Couples who never fight",                       es: "Las parejas que nunca pelean",                          difficultStance: "attack", weight: 70 },
+  { en: "Making your partner jealous on purpose",        es: "Dar celos a propósito",                                 difficultStance: "defend", weight: 75 },
+  { en: "Stalking an ex on social media",                es: "Stalkear a tu ex en redes",                             difficultStance: "defend", weight: 70 },
+  { en: "Having a hall pass",                            es: "Tener un pase libre",                                   difficultStance: "attack", weight: 60 },
+  { en: "Attraction without emotional connection",       es: "La atracción sin conexión emocional",                   difficultStance: "defend", weight: 65 },
+  { en: "Falling out of love slowly",                    es: "Dejar de amar poco a poco",                             difficultStance: "defend", weight: 65 },
+  { en: "One-night stands",                              es: "Los encuentros de una noche",                           difficultStance: "attack", weight: 60 },
+  { en: "Friends with benefits",                         es: "Los amigos con derechos",                               difficultStance: "attack", weight: 60 },
+  { en: "Marrying your opposite",                        es: "Casarse con tu opuesto",                                difficultStance: "defend", weight: 65 },
+  { en: "Needing space in a relationship",               es: "Necesitar espacio en una relación",                     difficultStance: "attack", weight: 65 },
+  { en: "Being the crazy ex",                            es: "Ser el ex intenso",                                     difficultStance: "defend", weight: 80 },
+  { en: "Love bombing",                                  es: "El love bombing",                                       difficultStance: "defend", weight: 80 },
+  { en: "Trauma bonding",                                es: "El trauma bonding",                                     difficultStance: "defend", weight: 75 },
+  { en: "Situationships",                                es: "Los situationships",                                    difficultStance: "defend", weight: 70 },
+  { en: "Catfishing",                                    es: "El catfishing",                                         difficultStance: "defend", weight: 80 },
+  { en: "Falling for someone online",                    es: "Enamorarse de alguien en línea",                        difficultStance: "defend", weight: 65 },
+  { en: "Being the rebound",                             es: "Ser el clavo que saca otro clavo",                      difficultStance: "defend", weight: 70 },
+  { en: "Using someone to get over someone else",        es: "Usar a alguien para superar a otro",                    difficultStance: "defend", weight: 75 },
+  { en: "Attraction to unavailable people",              es: "La atracción por personas no disponibles",              difficultStance: "defend", weight: 70 },
+  { en: "Couples who finish each other's sentences",     es: "Las parejas que se terminan las frases",                difficultStance: "attack", weight: 65 },
+  { en: "Saying we need to talk",                        es: "Decir tenemos que hablar",                              difficultStance: "defend", weight: 70 },
+  { en: "Breaking up by text",                           es: "Terminar una relación por mensaje",                     difficultStance: "defend", weight: 75 },
+  { en: "Public breakups",                               es: "Las rupturas en público",                               difficultStance: "defend", weight: 75 },
+  { en: "Matching outfits as a couple",                  es: "Vestirse igual en pareja",                              difficultStance: "defend", weight: 70 },
+  { en: "Posting your relationship online",              es: "Publicar tu relación en redes",                         difficultStance: "attack", weight: 60 },
+  { en: "Going to bed angry",                            es: "Irse a dormir enojado",                                 difficultStance: "defend", weight: 70 },
+  { en: "Keeping a list of past partners",               es: "Llevar la cuenta de tus exparejas",                     difficultStance: "defend", weight: 65 },
+  { en: "Asking someone's body count",                   es: "Preguntar el número de parejas",                        difficultStance: "defend", weight: 70 },
+  { en: "Couples who share bank accounts",               es: "Las parejas que comparten cuenta bancaria",             difficultStance: "attack", weight: 60 },
+  { en: "Having a secret Instagram",                     es: "Tener un Instagram secreto",                            difficultStance: "defend", weight: 80 },
+  { en: "Marrying someone your family hates",            es: "Casarse con alguien que tu familia odia",               difficultStance: "defend", weight: 70 },
+  { en: "Choosing career over relationship",             es: "Elegir la carrera sobre la relación",                   difficultStance: "defend", weight: 65 },
+  { en: "Not wanting children as a dealbreaker",         es: "No querer hijos como motivo de ruptura",                difficultStance: "defend", weight: 65 },
+  { en: "Loving someone but not being in love",          es: "Querer a alguien sin estar enamorado",                  difficultStance: "defend", weight: 65 },
+  { en: "Attraction to your therapist",                  es: "La atracción hacia tu terapeuta",                       difficultStance: "defend", weight: 80 },
+  { en: "Dating someone much younger",                   es: "Salir con alguien mucho menor",                         difficultStance: "defend", weight: 70 },
+  { en: "Staying with someone out of habit",             es: "Quedarse con alguien por costumbre",                    difficultStance: "defend", weight: 75 },
+  { en: "The spark fading in long relationships",        es: "Que se apague la chispa en relaciones largas",          difficultStance: "defend", weight: 65 },
+  { en: "Choosing looks over personality",               es: "Elegir apariencia sobre personalidad",                  difficultStance: "defend", weight: 75 },
+  { en: "Choosing personality over looks",               es: "Elegir personalidad sobre apariencia",                  difficultStance: "attack", weight: 65 },
+  { en: "Romanticizing toxic relationships",             es: "Romantizar relaciones tóxicas",                         difficultStance: "defend", weight: 80 },
+  { en: "Needing validation from a partner",             es: "Necesitar validación de tu pareja",                     difficultStance: "defend", weight: 70 },
+  { en: "Being in a relationship for comfort",           es: "Estar en pareja por comodidad",                         difficultStance: "defend", weight: 70 },
+  { en: "Falling for someone who hurt you",              es: "Enamorarse de alguien que te lastimó",                  difficultStance: "defend", weight: 70 },
+  { en: "Attraction to your best friend's partner",      es: "Sentir atracción por la pareja de tu amigo",            difficultStance: "defend", weight: 80 },
+  { en: "Celebrity crush while in a relationship",       es: "Tener un crush de celebridad estando en pareja",        difficultStance: "attack", weight: 65 },
+  { en: "Choosing passion over stability",               es: "Elegir pasión sobre estabilidad",                       difficultStance: "attack", weight: 60 },
+  { en: "Loving someone who doesn't love you back",      es: "Amar a alguien que no te corresponde",                  difficultStance: "defend", weight: 70 },
+  { en: "Never fully getting over your first love",      es: "Nunca superar del todo tu primer amor",                 difficultStance: "defend", weight: 65 },
+  { en: "Ending a relationship when things are good",    es: "Terminar una relación cuando todo va bien",             difficultStance: "defend", weight: 70 },
+];
+
 const STANCE_MAP = {
   love:            { en: 'LOVE IT',          es: 'LO AMO' },
   hate:            { en: 'HATE IT',          es: 'LO ODIO' },
@@ -1116,6 +1237,8 @@ const STANCE_MAP = {
   against:         { en: 'AGAINST',          es: 'EN CONTRA' },
   'for monarchy':  { en: 'FOR MONARCHY',     es: 'A FAVOR DE LA MONARQUÍA' },
   'for democracy': { en: 'FOR DEMOCRACY',    es: 'A FAVOR DE LA DEMOCRACIA' },
+  defend:          { en: 'DEFEND',           es: 'DEFENDER' },
+  attack:          { en: 'ATTACK',           es: 'ATACAR' },
 };
 
 const FREE_ROUNDS = 10;
@@ -1133,6 +1256,12 @@ const COPY = {
     credit: "Created by Sairy Romero",
     lightMode: 'LIGHT MODE',
     radicalMode: 'RADICAL MODE',
+    dramaMode: 'DRAMA MODE',
+    dramaAdultNote: 'Drama mode is intended for adult players.',
+    ageHeadline: 'DRAMA MODE',
+    ageQuestion: 'Contains mature themes.\nAre you 18+?',
+    ageYes: "YES, I'M 18+",
+    ageNo: 'No — back to home',
     addPlayers: '+ Add players',
     plTitle: 'PLAYERS',
     plSub: 'Enter names to track who convinces the most',
@@ -1206,6 +1335,12 @@ const COPY = {
     credit: "Creado por Sairy Romero",
     lightMode: 'MODO LIGHT',
     radicalMode: 'MODO RADICAL',
+    dramaMode: 'MODO DRAMA',
+    dramaAdultNote: 'El modo Drama es para jugadores adultos.',
+    ageHeadline: 'MODO DRAMA',
+    ageQuestion: 'Contiene temas para adultos.\n¿Tienes 18+?',
+    ageYes: 'SÍ, TENGO 18+',
+    ageNo: 'No — volver al inicio',
     addPlayers: '+ Agregar jugadores',
     plTitle: 'JUGADORES',
     plSub: 'Ingresa nombres para llevar el puntaje',
@@ -1287,7 +1422,7 @@ const G = {
   players: [],
   playerIdx: 0,
   scores: {},
-  usedTopics: { light: [], radical: [] },
+  usedTopics: { light: [], radical: [], drama: [] },
   currentTopic: null,
   currentStance: null,
   timerInterval: null,
@@ -1430,9 +1565,11 @@ function refreshCopy() {
   setText('land-tagline-1', c('tagline1'));
   setText('land-desc',     c('landDesc'));
   setText('land-credit',   c('credit'));
-  setText('btn-light',     c('lightMode'));
-  setText('btn-radical',   c('radicalMode'));
-  setText('btn-players',   c('addPlayers'));
+  setText('btn-light',         c('lightMode'));
+  setText('btn-radical',       c('radicalMode'));
+  setText('btn-drama',         c('dramaMode'));
+  setText('drama-adult-note',  c('dramaAdultNote'));
+  setText('btn-players',       c('addPlayers'));
   // Players
   setText('pl-title',      c('plTitle'));
   renderPlayerRows();
@@ -1568,23 +1705,30 @@ function skipPlayers() {
 
 function selectMode(mode) {
   G.mode = mode;
+  if (getRounds(mode) >= FREE_ROUNDS) { showPaywall(); return; }
+  if (mode === 'light') { beginGame('easy', 60); return; }
+  if (mode === 'drama') { showAgeGate(); return; }
+  showDifficultyScreen();
+}
 
-  if (getRounds(mode) >= FREE_ROUNDS) {
-    showPaywall();
-    return;
-  }
-
-  if (mode === 'light') {
-    // Light is always Easy / 1 min — skip difficulty screen
-    beginGame('easy', 60);
-    return;
-  }
-
-  // Radical: choose difficulty
-  setText('diff-mode-label', c('radicalMode'));
+function showDifficultyScreen() {
+  const labelKey = G.mode === 'radical' ? 'radicalMode' : 'dramaMode';
+  setText('diff-mode-label', c(labelKey));
   setText('diff-sub', c('chooseTimer'));
   renderDiffCards();
   showScreen('screen-difficulty');
+}
+
+function showAgeGate() {
+  setText('age-headline', c('ageHeadline'));
+  setText('age-question', c('ageQuestion'));
+  setText('age-yes',      c('ageYes'));
+  setText('age-no',       c('ageNo'));
+  showScreen('screen-agegate');
+}
+
+function agegateYes() {
+  showDifficultyScreen();
 }
 
 function renderDiffCards() {
@@ -1610,7 +1754,7 @@ function renderDiffCards() {
 ═══════════════════════════════════════════ */
 
 function getPool() {
-  const base = G.mode === 'light' ? LIGHT_TOPICS : RADICAL_TOPICS;
+  const base = G.mode === 'light' ? LIGHT_TOPICS : G.mode === 'radical' ? RADICAL_TOPICS : DRAMA_TOPICS;
   if (!isMonthly()) return base;
   const custom = getCustomTopics().filter(t => t.mode === G.mode);
   if (custom.length === 0) return base;
@@ -1625,8 +1769,10 @@ function getOppositeStance(s) {
   if (s === 'hate')         return 'love';
   if (s === 'for')          return 'against';
   if (s === 'against')      return 'for';
-  if (s === 'for monarchy') return 'for democracy';
+  if (s === 'for monarchy')  return 'for democracy';
   if (s === 'for democracy') return 'for monarchy';
+  if (s === 'defend')        return 'attack';
+  if (s === 'attack')        return 'defend';
 }
 
 function pickStance(topic) {
@@ -2035,6 +2181,7 @@ function selectFormMode(mode) {
 function updateFormModeButtons() {
   document.getElementById('fmode-light').classList.toggle('active', _formMode === 'light');
   document.getElementById('fmode-radical').classList.toggle('active', _formMode === 'radical');
+  document.getElementById('fmode-drama').classList.toggle('active', _formMode === 'drama');
 }
 
 function saveNewTopic() {
@@ -2046,7 +2193,7 @@ function saveNewTopic() {
     en,
     es,
     mode: _formMode,
-    difficultStance: _formMode === 'light' ? 'love' : 'for',
+    difficultStance: _formMode === 'light' ? 'love' : _formMode === 'drama' ? 'defend' : 'for',
     weight: 50,
   });
   saveCustomTopics(topics);
