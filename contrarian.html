@@ -638,6 +638,11 @@
       border-bottom: 1px solid var(--dim);
     }
 
+    .pw-custom-section { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--dim); }
+    .pw-custom-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.75rem; }
+    .pw-custom-body { font-size: 0.85rem; font-weight: 400; line-height: 1.7; color: var(--gray); }
+    .pw-custom-body em { font-style: italic; color: var(--white); }
+
     .pw-feature {
       font-size: 0.72rem;
       font-weight: 600;
@@ -849,6 +854,11 @@
       <p class="pw-feature" id="pw-monthly-feature">+ Custom topics — build your own game.</p>
       <button class="btn btn-fill price-btn" id="btn-pw-monthly" onclick="paywallClickMonthly()">GET MONTHLY PASS</button>
     </div>
+  </div>
+
+  <div class="pw-custom-section">
+    <p class="pw-custom-title" id="pw-custom-title">WHAT CAN YOU DO WITH CUSTOM TOPICS?</p>
+    <p class="pw-custom-body" id="pw-custom-body"></p>
   </div>
 
   <button class="btn-ghost mt-2" id="btn-pw-back" onclick="goHome()">← Back to home</button>
@@ -1301,6 +1311,8 @@ const COPY = {
     pwMonthlyHook: 'For classrooms, workshops, and teams.',
     pwMonthlyFeature: '+ Custom topics. Build your own game.',
     pwMonthlyBtn: 'GET MONTHLY PASS',
+    pwCustomTitle: 'WHAT CAN YOU DO WITH CUSTOM TOPICS?',
+    pwCustomBody: "The monthly plan unlocks Custom Topics, your own topics, built exactly the way you need them. A law professor can turn the game into a live case study exercise: <em>'Defend the defendant in State v. Morrison.'</em> A group of friends can make it devastatingly personal: <em>'Argue that Carlos was right to ghost Ana,'</em> or <em>'Defend the time Diego showed up two hours late to his own birthday.'</em> A therapist can use it to explore difficult conversations in a low-stakes setting. A team lead can build a culture exercise out of real workplace dilemmas. The game stays the same. The chaos becomes yours.",
     pwBack: '← Back to home',
     myTopicsBtn: 'MY TOPICS',
     myTopicsTitle: 'MY TOPICS',
@@ -1392,6 +1404,8 @@ const COPY = {
     pwMonthlyHook: 'Para clases, talleres y equipos de trabajo.',
     pwMonthlyFeature: '+ Temas personalizados. Haz tu propio juego.',
     pwMonthlyBtn: 'OBTENER PASE MENSUAL',
+    pwCustomTitle: '¿QUÉ PUEDES HACER CON LOS TEMAS PERSONALIZADOS?',
+    pwCustomBody: "El plan mensual desbloquea los Temas Personalizados, tus propios temas, construidos exactamente como los necesitas. Un profesor de derecho puede convertir el juego en un ejercicio de casos en vivo: <em>'Defiende al acusado en el caso González vs. Estado.'</em> Un grupo de amigos puede hacerlo devastadoramente personal: <em>'Argumenta que Carlos tenía razón de ghostear a Ana,'</em> o <em>'Defiende la vez que Diego llegó dos horas tarde a su propio cumpleaños.'</em> Una terapeuta puede usarlo para explorar conversaciones difíciles en un contexto de bajo riesgo. Un líder de equipo puede construir un ejercicio de cultura organizacional con dilemas reales de la oficina. El juego sigue siendo el mismo. El caos se vuelve tuyo.",
     pwBack: '← Volver al inicio',
     myTopicsBtn: 'MIS TEMAS',
     myTopicsTitle: 'MIS TEMAS',
@@ -1644,6 +1658,8 @@ function refreshCopy() {
   setText('pw-monthly-feature', c('pwMonthlyFeature'));
   setText('btn-pw-monthly',     c('pwMonthlyBtn'));
   setText('btn-pw-back',        c('pwBack'));
+  setText('pw-custom-title',    c('pwCustomTitle'));
+  document.getElementById('pw-custom-body').innerHTML = c('pwCustomBody');
   // Scoreboard
   setText('sb-title',     c('sbTitle'));
   setText('sb-sub',       c('sbSub'));
@@ -2042,6 +2058,8 @@ function showPaywall() {
   setText('pw-monthly-feature', c('pwMonthlyFeature'));
   setText('btn-pw-monthly',     c('pwMonthlyBtn'));
   setText('btn-pw-back',        c('pwBack'));
+  setText('pw-custom-title',    c('pwCustomTitle'));
+  document.getElementById('pw-custom-body').innerHTML = c('pwCustomBody');
   showScreen('screen-paywall');
 }
 
