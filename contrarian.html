@@ -638,10 +638,16 @@
       border-bottom: 1px solid var(--dim);
     }
 
-    .pw-custom-section { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--dim); }
-    .pw-custom-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.75rem; }
-    .pw-custom-body { font-size: 0.85rem; font-weight: 400; line-height: 1.7; color: var(--gray); }
-    .pw-custom-body em { font-style: italic; color: var(--white); }
+    /* ── CUSTOM TOPICS SCREEN ── */
+    #ct-headline {
+      font-size: clamp(2.5rem, 12vw, 5.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+    .ct-body { font-size: 0.85rem; font-weight: 400; line-height: 1.7; color: var(--gray); margin-top: 1.5rem; }
+    .ct-body em { font-style: italic; color: var(--white); }
 
     .pw-feature {
       font-size: 0.72rem;
@@ -708,7 +714,7 @@
     <button class="btn btn-outline" id="btn-radical" onclick="selectMode('radical')">RADICAL MODE</button>
     <button class="btn btn-outline" id="btn-drama" onclick="selectMode('drama')">DRAMA MODE</button>
     <button class="btn-ghost" id="btn-players" onclick="goToPlayers()">+ Add players</button>
-    <button class="btn-ghost" id="btn-make-game" onclick="showPaywall()">Make your own game</button>
+    <button class="btn-ghost" id="btn-make-game" onclick="showCustomScreen()">Make your own game</button>
   </div>
 
   <button class="btn-ghost" id="btn-mytopics" onclick="showMyTopics()" style="display:none; margin-top:0.75rem; font-size:0.7rem; letter-spacing:0.15em;">MY TOPICS</button>
@@ -818,6 +824,19 @@
 </section>
 
 <!-- ══════════════════════════════════════════
+     CUSTOM TOPICS PITCH
+═══════════════════════════════════════════ -->
+<section class="screen" id="screen-custom">
+  <div id="ct-headline"></div>
+  <p class="ct-body" id="ct-body"></p>
+  <div class="spacer"></div>
+  <div class="stack mt-4">
+    <button class="btn btn-fill" id="ct-cta" onclick="showPaywall()">SEE PRICING</button>
+    <button class="btn-ghost"    id="ct-back" onclick="goHome()">← Back</button>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
      PAYWALL
 ═══════════════════════════════════════════ -->
 <section class="screen" id="screen-paywall">
@@ -855,11 +874,6 @@
       <p class="pw-feature" id="pw-monthly-feature">+ Custom topics — build your own game.</p>
       <button class="btn btn-fill price-btn" id="btn-pw-monthly" onclick="paywallClickMonthly()">GET MONTHLY PASS</button>
     </div>
-  </div>
-
-  <div class="pw-custom-section">
-    <p class="pw-custom-title" id="pw-custom-title">WHAT CAN YOU DO WITH CUSTOM TOPICS?</p>
-    <p class="pw-custom-body" id="pw-custom-body"></p>
   </div>
 
   <button class="btn-ghost mt-2" id="btn-pw-back" onclick="goHome()">← Back to home</button>
@@ -1279,6 +1293,10 @@ const COPY = {
     ageNo: 'No — back to home',
     addPlayers: '+ Add players',
     makeYourGame: 'Make your own game',
+    ctHeadline: 'BUILD YOUR\nOWN GAME.',
+    ctBody: "The monthly plan unlocks Custom Topics, your own topics, built exactly the way you need them. A law professor can turn the game into a live case study exercise: <em>'Defend the defendant in State v. Morrison.'</em> A group of friends can make it devastatingly personal: <em>'Argue that Carlos was right to ghost Ana,'</em> or <em>'Defend the time Diego showed up two hours late to his own birthday.'</em> A therapist can use it to explore difficult conversations in a low-stakes setting. A team lead can build a culture exercise out of real workplace dilemmas. The game stays the same. The chaos becomes yours.",
+    ctCta: 'SEE PRICING',
+    ctBack: '← Back',
     plTitle: 'PLAYERS',
     plSub: 'Enter names to track who convinces the most',
     addPlayer: '+ Add player',
@@ -1373,6 +1391,10 @@ const COPY = {
     ageNo: 'No — volver al inicio',
     addPlayers: '+ Agregar jugadores',
     makeYourGame: 'Haz tu propio juego',
+    ctHeadline: 'HAZ TU\nPROPIO JUEGO.',
+    ctBody: "El plan mensual desbloquea los Temas Personalizados, tus propios temas, construidos exactamente como los necesitas. Un profesor de derecho puede convertir el juego en un ejercicio de casos en vivo: <em>'Defiende al acusado en el caso González vs. Estado.'</em> Un grupo de amigos puede hacerlo devastadoramente personal: <em>'Argumenta que Carlos tenía razón de ghostear a Ana,'</em> o <em>'Defiende la vez que Diego llegó dos horas tarde a su propio cumpleaños.'</em> Una terapeuta puede usarlo para explorar conversaciones difíciles en un contexto de bajo riesgo. Un líder de equipo puede construir un ejercicio de cultura organizacional con dilemas reales de la oficina. El juego sigue siendo el mismo. El caos se vuelve tuyo.",
+    ctCta: 'VER PRECIOS',
+    ctBack: '← Volver',
     plTitle: 'JUGADORES',
     plSub: 'Ingresa nombres para llevar el puntaje',
     addPlayer: '+ Agregar jugador',
@@ -1662,8 +1684,11 @@ function refreshCopy() {
   setText('pw-monthly-feature', c('pwMonthlyFeature'));
   setText('btn-pw-monthly',     c('pwMonthlyBtn'));
   setText('btn-pw-back',        c('pwBack'));
-  setText('pw-custom-title',    c('pwCustomTitle'));
-  document.getElementById('pw-custom-body').innerHTML = c('pwCustomBody');
+  // Custom Topics screen
+  setText('ct-cta',  c('ctCta'));
+  setText('ct-back', c('ctBack'));
+  document.getElementById('ct-headline').innerHTML = c('ctHeadline').replace('\n', '<br>');
+  document.getElementById('ct-body').innerHTML = c('ctBody');
   // Scoreboard
   setText('sb-title',     c('sbTitle'));
   setText('sb-sub',       c('sbSub'));
@@ -2062,8 +2087,6 @@ function showPaywall() {
   setText('pw-monthly-feature', c('pwMonthlyFeature'));
   setText('btn-pw-monthly',     c('pwMonthlyBtn'));
   setText('btn-pw-back',        c('pwBack'));
-  setText('pw-custom-title',    c('pwCustomTitle'));
-  document.getElementById('pw-custom-body').innerHTML = c('pwCustomBody');
   showScreen('screen-paywall');
 }
 
@@ -2072,6 +2095,14 @@ function paywallClick() {
     ? 'Pago en camino — por ahora, gracias por jugar. 🖤'
     : 'Payment coming soon — thanks for playing. 🖤';
   alert(msg);
+}
+
+function showCustomScreen() {
+  document.getElementById('ct-headline').innerHTML = c('ctHeadline').replace('\n', '<br>');
+  document.getElementById('ct-body').innerHTML = c('ctBody');
+  setText('ct-cta',  c('ctCta'));
+  setText('ct-back', c('ctBack'));
+  showScreen('screen-custom');
 }
 
 function paywallClickMonthly() {
