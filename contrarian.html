@@ -646,8 +646,10 @@
       text-transform: uppercase;
       letter-spacing: -0.02em;
     }
-    .ct-body { font-size: 0.85rem; font-weight: 400; line-height: 1.7; color: var(--gray); margin-top: 1.5rem; }
+    .ct-lead  { font-size: clamp(0.95rem, 3.5vw, 1.2rem); font-weight: 600; color: var(--white); line-height: 1.45; margin-top: 1.75rem; }
+    .ct-body  { font-size: 0.85rem; font-weight: 400; line-height: 1.7; color: var(--gray); margin-top: 1.25rem; }
     .ct-body em { font-style: italic; color: var(--white); }
+    .ct-close { font-size: clamp(0.95rem, 3.5vw, 1.2rem); font-weight: 600; color: var(--white); line-height: 1.45; margin-top: 1.25rem; }
 
     .pw-feature {
       font-size: 0.72rem;
@@ -714,7 +716,7 @@
     <button class="btn btn-outline" id="btn-radical" onclick="selectMode('radical')">RADICAL MODE</button>
     <button class="btn btn-outline" id="btn-drama" onclick="selectMode('drama')">DRAMA MODE</button>
     <button class="btn-ghost" id="btn-players" onclick="goToPlayers()">+ Add players</button>
-    <button class="btn-ghost" id="btn-make-game" onclick="showCustomScreen()">Make your own game</button>
+    <button class="btn btn-outline" id="btn-make-game" onclick="showCustomScreen()">Build your own game</button>
   </div>
 
   <button class="btn-ghost" id="btn-mytopics" onclick="showMyTopics()" style="display:none; margin-top:0.75rem; font-size:0.7rem; letter-spacing:0.15em;">MY TOPICS</button>
@@ -828,11 +830,13 @@
 ═══════════════════════════════════════════ -->
 <section class="screen" id="screen-custom">
   <div id="ct-headline"></div>
-  <p class="ct-body" id="ct-body"></p>
+  <p class="ct-lead"  id="ct-lead"></p>
+  <p class="ct-body"  id="ct-body"></p>
+  <p class="ct-close" id="ct-close"></p>
   <div class="spacer"></div>
   <div class="stack mt-4">
-    <button class="btn btn-fill" id="ct-cta" onclick="showPaywall()">SEE PRICING</button>
-    <button class="btn-ghost"    id="ct-back" onclick="goHome()">← Back</button>
+    <a class="btn btn-fill" id="ct-cta" href="#" target="_blank" rel="noopener">GET MONTHLY · $45 USD</a>
+    <button class="btn-ghost" id="ct-back" onclick="goHome()">← Back</button>
   </div>
 </section>
 
@@ -1270,6 +1274,7 @@ const STANCE_MAP = {
 };
 
 const FREE_ROUNDS = 10;
+const STRIPE_MONTHLY_URL = ''; // swap in Stripe Payment Link once live
 
 /* ══════════════════════════════════════════
    TRANSLATIONS
@@ -1291,10 +1296,12 @@ const COPY = {
     ageYes: "YES, I'M 18+",
     ageNo: 'No — back to home',
     addPlayers: '+ Add players',
-    makeYourGame: 'Make your own game',
+    makeYourGame: 'Build your own game',
     ctHeadline: 'BUILD YOUR\nOWN GAME.',
-    ctBody: "The monthly plan unlocks Custom Topics, your own topics, built exactly the way you need them. A law professor can turn the game into a live case study exercise: <em>'Defend the defendant in State v. Morrison.'</em> A group of friends can make it devastatingly personal: <em>'Argue that Carlos was right to ghost Ana,'</em> or <em>'Defend the time Diego showed up two hours late to his own birthday.'</em> A therapist can use it to explore difficult conversations in a low-stakes setting. A team lead can build a culture exercise out of real workplace dilemmas. The game stays the same. The chaos becomes yours.",
-    ctCta: 'SEE PRICING',
+    ctLead:  "The monthly plan unlocks Custom Topics, your own topics, built exactly the way you need them.",
+    ctBody:  "A law professor can turn the game into a live case study exercise: <em>'Defend the defendant in State v. Morrison.'</em> A group of friends can make it devastatingly personal: <em>'Argue that Carlos was right to ghost Ana,'</em> or <em>'Defend the time Diego showed up two hours late to his own birthday.'</em> A therapist can use it to explore difficult conversations in a low-stakes setting. A team lead can build a culture exercise out of real workplace dilemmas.",
+    ctClose: "The game stays the same. The chaos becomes yours.",
+    ctCta: 'GET MONTHLY · $45 USD',
     ctBack: '← Back',
     plTitle: 'PLAYERS',
     plSub: 'Enter names to track who convinces the most',
@@ -1391,8 +1398,10 @@ const COPY = {
     addPlayers: '+ Agregar jugadores',
     makeYourGame: 'Haz tu propio juego',
     ctHeadline: 'HAZ TU\nPROPIO JUEGO.',
-    ctBody: "El plan mensual desbloquea los Temas Personalizados, tus propios temas, construidos exactamente como los necesitas. Un profesor de derecho puede convertir el juego en un ejercicio de casos en vivo: <em>'Defiende al acusado en el caso González vs. Estado.'</em> Un grupo de amigos puede hacerlo devastadoramente personal: <em>'Argumenta que Carlos tenía razón de ghostear a Ana,'</em> o <em>'Defiende la vez que Diego llegó dos horas tarde a su propio cumpleaños.'</em> Una terapeuta puede usarlo para explorar conversaciones difíciles en un contexto de bajo riesgo. Un líder de equipo puede construir un ejercicio de cultura organizacional con dilemas reales de la oficina. El juego sigue siendo el mismo. El caos se vuelve tuyo.",
-    ctCta: 'VER PRECIOS',
+    ctLead:  "El plan mensual desbloquea los Temas Personalizados, tus propios temas, construidos exactamente como los necesitas.",
+    ctBody:  "Un profesor de derecho puede convertir el juego en un ejercicio de casos en vivo: <em>'Defiende al acusado en el caso González vs. Estado.'</em> Un grupo de amigos puede hacerlo devastadoramente personal: <em>'Argumenta que Carlos tenía razón de ghostear a Ana,'</em> o <em>'Defiende la vez que Diego llegó dos horas tarde a su propio cumpleaños.'</em> Una terapeuta puede usarlo para explorar conversaciones difíciles en un contexto de bajo riesgo. Un líder de equipo puede construir un ejercicio de cultura organizacional con dilemas reales de la oficina.",
+    ctClose: "El juego sigue siendo el mismo. El caos se vuelve tuyo.",
+    ctCta: 'PASE MENSUAL · $45 USD',
     ctBack: '← Volver',
     plTitle: 'JUGADORES',
     plSub: 'Ingresa nombres para llevar el puntaje',
@@ -1682,10 +1691,13 @@ function refreshCopy() {
   setText('btn-pw-monthly',     c('pwMonthlyBtn'));
   setText('btn-pw-back',        c('pwBack'));
   // Custom Topics screen
-  setText('ct-cta',  c('ctCta'));
-  setText('ct-back', c('ctBack'));
   document.getElementById('ct-headline').innerHTML = c('ctHeadline').replace('\n', '<br>');
+  setText('ct-lead',  c('ctLead'));
   document.getElementById('ct-body').innerHTML = c('ctBody');
+  setText('ct-close', c('ctClose'));
+  const ctaEl = document.getElementById('ct-cta');
+  if (ctaEl) { ctaEl.textContent = c('ctCta'); ctaEl.href = STRIPE_MONTHLY_URL || '#'; }
+  setText('ct-back', c('ctBack'));
   // Scoreboard
   setText('sb-title',     c('sbTitle'));
   setText('sb-sub',       c('sbSub'));
@@ -2094,8 +2106,12 @@ function paywallClick() {
 
 function showCustomScreen() {
   document.getElementById('ct-headline').innerHTML = c('ctHeadline').replace('\n', '<br>');
+  setText('ct-lead',  c('ctLead'));
   document.getElementById('ct-body').innerHTML = c('ctBody');
-  setText('ct-cta',  c('ctCta'));
+  setText('ct-close', c('ctClose'));
+  const cta = document.getElementById('ct-cta');
+  cta.textContent = c('ctCta');
+  cta.href = STRIPE_MONTHLY_URL || '#';
   setText('ct-back', c('ctBack'));
   showScreen('screen-custom');
 }
