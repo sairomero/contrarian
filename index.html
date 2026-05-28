@@ -910,11 +910,11 @@
 
   <div class="mt-4">
     <div class="price-card">
-      <h3 id="pw-24h-title">DAY PASS</h3>
+      <h3 id="pw-24h-title">24 HOUR PASS</h3>
       <div>
         <span class="price-main">$5 USD</span>
       </div>
-      <button class="btn btn-fill price-btn" id="btn-pw-24h" onclick="paywallClick('day')">GET DAY PASS</button>
+      <button class="btn btn-fill price-btn" id="btn-pw-24h" onclick="paywallClick('day')">GET 24 HOURS</button>
     </div>
 
     <div class="price-card">
@@ -1427,9 +1427,9 @@ const COPY = {
     pwRounds: n => `${n} OF ${FREE_ROUNDS} FREE ROUNDS USED`,
     pwHeadline: "KEEP\nPLAYING.",
     pwSub: 'Unlock unlimited rounds for your group.',
-    pw24hTitle: 'DAY PASS',
+    pw24hTitle: '24 HOUR PASS',
     pw24hHook: 'The price of one beer for the whole table.',
-    pw24hBtn: 'GET DAY PASS',
+    pw24hBtn: 'GET 24 HOURS',
     pwWeeklyTitle: '1 WEEK',
     pwWeeklyHook: 'Premium entertainment. Any group, all week.',
     pwWeeklyBtn: 'GET 1 WEEK',
@@ -1530,9 +1530,9 @@ const COPY = {
     pwRounds: n => `${n} DE ${FREE_ROUNDS} RONDAS GRATUITAS USADAS`,
     pwHeadline: "SIGUE\nJUGANDO.",
     pwSub: 'Desbloquea rondas ilimitadas.',
-    pw24hTitle: 'PASE DEL DÍA',
+    pw24hTitle: 'PASE DE 24 HORAS',
     pw24hHook: 'El precio de una cerveza para toda la mesa.',
-    pw24hBtn: 'OBTENER PASE DEL DÍA',
+    pw24hBtn: 'OBTENER 24 HORAS',
     pwWeeklyTitle: '1 SEMANA',
     pwWeeklyHook: 'Entretenimiento premium. Cualquier grupo, toda la semana.',
     pwWeeklyBtn: 'OBTENER 1 SEMANA',
@@ -2447,7 +2447,7 @@ function paywallClick(type) {
   _sb.auth.getUser().then(({ data: { user } }) => {
     if (!user) { requireAuth(() => paywallClick(type)); return; }
     const url = type === 'week' ? STRIPE_WEEK_URL : STRIPE_DAY_URL;
-    window.location.href = url;
+    window.open(url, '_blank');
   });
 }
 
@@ -2467,7 +2467,7 @@ function showCustomScreen() {
 function paywallClickMonthly() {
   _sb.auth.getUser().then(({ data: { user } }) => {
     if (!user) { requireAuth(() => paywallClickMonthly()); return; }
-    window.location.href = STRIPE_MONTHLY_URL;
+    window.open(STRIPE_MONTHLY_URL, '_blank');
   });
 }
 
