@@ -797,8 +797,7 @@
   <hr>
   <div id="player-inputs"></div>
   <button class="btn-ghost mt-2" id="btn-add-pl" onclick="addPlayerRow()" style="text-align:left;">+ Add player</button>
-  <div class="spacer"></div>
-  <div class="stack mt-4">
+  <div class="stack mt-3">
     <button class="btn btn-fill" id="btn-confirm-pl" onclick="confirmPlayers()">CONFIRM</button>
     <button class="btn-ghost" id="btn-skip-pl" onclick="skipPlayers()">Skip — play without tracking</button>
   </div>
@@ -895,7 +894,7 @@
   <p class="ct-body"  id="ct-body"></p>
   <p class="ct-close" id="ct-close"></p>
   <div class="stack mt-4">
-    <button class="btn btn-fill" id="ct-cta" onclick="paywallClickMonthly()">GET 1 MONTH · $45 USD</button>
+    <button class="btn btn-fill" id="ct-cta" onclick="paywallClickMonthly()">GET 1 MONTH · $25 USD</button>
     <button class="btn-ghost" id="ct-back" onclick="goHome()">← Back</button>
   </div>
 </section>
@@ -913,7 +912,7 @@
     <div class="price-card">
       <h3 id="pw-24h-title">DAY PASS</h3>
       <div>
-        <span class="price-main">$10 USD</span>
+        <span class="price-main">$5 USD</span>
       </div>
       <button class="btn btn-fill price-btn" id="btn-pw-24h" onclick="paywallClick('day')">GET DAY PASS</button>
     </div>
@@ -921,7 +920,7 @@
     <div class="price-card">
       <h3 id="pw-weekly-title">1 WEEK</h3>
       <div>
-        <span class="price-main">$25 USD</span>
+        <span class="price-main">$15 USD</span>
       </div>
       <button class="btn btn-fill price-btn" id="btn-pw-weekly" onclick="paywallClick('week')">GET 1 WEEK</button>
     </div>
@@ -929,7 +928,7 @@
     <div class="price-card">
       <h3 id="pw-monthly-title">1 MONTH</h3>
       <div>
-        <span class="price-main">$45 USD</span>
+        <span class="price-main">$25 USD</span>
       </div>
       <p class="pw-feature" id="pw-monthly-feature">+ Custom topics — build your own game.</p>
       <button class="btn btn-fill price-btn" id="btn-pw-monthly" onclick="paywallClickMonthly()">GET 1 MONTH</button>
@@ -1370,9 +1369,9 @@ const STANCE_MAP = {
 };
 
 const FREE_ROUNDS = 10;
-const STRIPE_DAY_URL     = 'https://buy.stripe.com/dRmeVc0va0SD9IF9z95kk00';
-const STRIPE_WEEK_URL    = 'https://buy.stripe.com/8x2bJ06Ty1WH3kh6mX5kk01';
-const STRIPE_MONTHLY_URL = 'https://buy.stripe.com/bJe00i91G58T0854eP5kk02';
+const STRIPE_DAY_URL     = 'https://buy.stripe.com/aFaaEW3Hm0SDcURdPp5kk03';
+const STRIPE_WEEK_URL    = 'https://buy.stripe.com/7sYdR8dhWgRBg736mX5kk04';
+const STRIPE_MONTHLY_URL = 'https://buy.stripe.com/cNi14m7XCeJtcUR8v55kk05';
 
 /* ══════════════════════════════════════════
    TRANSLATIONS
@@ -1399,7 +1398,7 @@ const COPY = {
     ctLead:  "1 month unlocks Custom Topics. Your own topics, built exactly the way you need them.",
     ctBody:  "A group of friends can make it devastatingly personal. A therapist can use it to explore difficult conversations in a lighter setting. A law professor can turn the game into a case study exercise. A comedy writer can turn it into a full night of live prompts.",
     ctClose: "The game stays the same. The chaos becomes yours.",
-    ctCta: 'GET 1 MONTH · $45 USD',
+    ctCta: 'GET 1 MONTH · $25 USD',
     ctBack: '← Back',
     plTitle: 'PLAYERS',
     plSub: 'Enter names to track who convinces the most',
@@ -1502,7 +1501,7 @@ const COPY = {
     ctLead:  "1 mes desbloquea los Temas Personalizados. Tus propios temas, construidos exactamente como los necesitas.",
     ctBody:  "Un grupo de amigos puede hacerlo mucho más personal. Una terapeuta puede usarlo para explorar conversaciones difíciles con más ligereza. Un profesor de derecho puede convertir el juego en un ejercicio de casos. Un comediante puede armar una noche entera de prompts en vivo.",
     ctClose: "El juego sigue siendo el mismo. El caos se vuelve tuyo.",
-    ctCta: '1 MES · $45 USD',
+    ctCta: '1 MES · $25 USD',
     ctBack: '← Volver',
     plTitle: 'JUGADORES',
     plSub: 'Ingresa nombres para llevar el puntaje',
