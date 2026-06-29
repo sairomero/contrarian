@@ -9,24 +9,23 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><defs><clipPath id='fl'><rect x='0' y='0' width='100' height='200'/></clipPath><clipPath id='fr'><rect x='100' y='0' width='100' height='200'/></clipPath></defs><circle cx='100' cy='100' r='90' fill='%23111' clip-path='url(%23fl)'/><circle cx='100' cy='100' r='90' fill='%23fff' clip-path='url(%23fr)'/><circle cx='100' cy='100' r='90' fill='none' stroke='%23555' stroke-width='2'/><circle cx='62' cy='100' r='14' fill='%23fff'/></svg>">
 
   <!-- SEO -->
-  <meta name="description" content="A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter. Play Light with everyday topics, or go Radical with the ones people actually fight about.">
+  <meta name="description" content="A party game you play in person with friends and family. The point isn't to be right — it's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter.">
   <meta name="theme-color" content="#000000">
 
   <!-- Open Graph (WhatsApp, Facebook, iMessage) -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://contrariangame.com">
   <meta property="og:title"       content="Contrarian — The Debate Game">
-  <meta property="og:description" content="A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter.">
+  <meta property="og:description" content="A party game you play in person with friends and family. The point isn't to be right — it's to be convincing. Topics are random. Stances are assigned. Your real beliefs don't matter.">
 
   <!-- Twitter / X -->
   <meta name="twitter:card"        content="summary">
   <meta name="twitter:title"       content="Contrarian — The Debate Game">
-  <meta name="twitter:description" content="A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter.">
+  <meta name="twitter:description" content="A party game you play in person with friends and family. The point isn't to be right — it's to be convincing. Topics are random. Stances are assigned. Your real beliefs don't matter.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -487,36 +486,6 @@
       white-space: pre-line;
     }
 
-    /* ── PAYWALL ── */
-    #screen-paywall { justify-content: space-between; }
-
-    .paywall-top h2 {
-      font-size: clamp(2.5rem, 14vw, 7rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      line-height: 0.92;
-      white-space: pre-line;
-    }
-
-    .price-card {
-      border: 1px solid var(--white);
-      padding: 1.25rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .price-card h3 {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray);
-      margin-bottom: 0.5rem;
-    }
-
-    .price-main { font-size: clamp(1.5rem, 7vw, 2.25rem); font-weight: 900; }
-    .price-alt { font-size: 0.85rem; color: var(--gray); margin-left: 0.375rem; }
-    .price-hook { font-size: 0.75rem; color: var(--gray); margin-top: 0.4rem; font-style: italic; }
-    .price-btn { margin-top: 0.875rem; }
 
     /* ── SCOREBOARD ── */
     #sb-winner { margin-bottom: 1.5rem; }
@@ -677,46 +646,6 @@
       .t-game-title { font-size: clamp(2rem, 11vw, 9rem); }
     }
 
-    /* ── AUTH OVERLAY ── */
-    #auth-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: var(--black);
-      overflow-y: auto;
-    }
-    #auth-overlay.hidden { display: none !important; }
-    .auth-inner {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      padding: 1.75rem 1.25rem 2rem;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-    .auth-label {
-      display: block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray);
-      margin-bottom: 0.4rem;
-    }
-
-    /* ── ACCOUNT DROPDOWN ── */
-    #account-dropdown {
-      position: fixed;
-      top: 52px;
-      right: 0;
-      z-index: 150;
-      background: var(--black);
-      border: 1px solid var(--white);
-      border-top: none;
-      padding: 1rem 1.25rem;
-      min-width: 180px;
-    }
-    #account-dropdown.hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -739,14 +668,7 @@
   <div class="topbar-controls">
     <button class="ctrl-btn" id="lang-btn" onclick="toggleLang()">ES</button>
     <button class="ctrl-btn" id="mute-btn" onclick="toggleMute()">MUTE</button>
-    <button class="ctrl-btn" id="account-btn" onclick="onAccountBtn()">LOG IN</button>
   </div>
-</div>
-
-<!-- ACCOUNT DROPDOWN -->
-<div id="account-dropdown" class="hidden">
-  <p id="dropdown-username" style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);margin-bottom:0.75rem;word-break:break-all;"></p>
-  <button class="btn btn-outline" onclick="signOut()" style="font-size:0.7rem;padding:0.5rem 1rem;">SIGN OUT</button>
 </div>
 
 <main>
@@ -779,7 +701,7 @@
     <button class="btn btn-outline" id="btn-make-game" onclick="showCustomScreen()">Build your own game</button>
   </div>
 
-  <button class="btn-ghost" id="btn-mytopics" onclick="showMyTopics()" style="display:none; margin-top:0.75rem; font-size:0.7rem; letter-spacing:0.15em;">MY TOPICS</button>
+  <button class="btn-ghost" id="btn-mytopics" onclick="showMyTopics()" style="margin-top:0.75rem; font-size:0.7rem; letter-spacing:0.15em;">MY TOPICS</button>
 
   <div style="margin-top:1rem; text-align:center;">
     <a href="https://www.instagram.com/sairomero_/" target="_blank" rel="noopener" id="land-credit" style="font-size:0.7rem; letter-spacing:0.08em;">Created by Sairy Romero</a>
@@ -894,49 +816,11 @@
   <p class="ct-body"  id="ct-body"></p>
   <p class="ct-close" id="ct-close"></p>
   <div class="stack mt-4">
-    <button class="btn btn-fill" id="ct-cta" onclick="paywallClickMonthly()">GET 1 MONTH · $25 USD</button>
+    <button class="btn btn-fill" id="ct-cta" onclick="showMyTopics()">BUILD YOUR GAME</button>
     <button class="btn-ghost" id="ct-back" onclick="goHome()">← Back</button>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     PAYWALL
-═══════════════════════════════════════════ -->
-<section class="screen" id="screen-paywall">
-  <div class="paywall-top">
-    <h2 id="pw-headline">KEEP<br>PLAYING.</h2>
-    <p class="t-medium mt-2" id="pw-sub">Unlock unlimited rounds.</p>
-  </div>
-
-  <div class="mt-4">
-    <div class="price-card">
-      <h3 id="pw-24h-title">24 HOUR PASS</h3>
-      <div>
-        <span class="price-main">$5 USD</span>
-      </div>
-      <button class="btn btn-fill price-btn" id="btn-pw-24h" onclick="paywallClick('day')">GET 24 HOURS</button>
-    </div>
-
-    <div class="price-card">
-      <h3 id="pw-weekly-title">1 WEEK</h3>
-      <div>
-        <span class="price-main">$15 USD</span>
-      </div>
-      <button class="btn btn-fill price-btn" id="btn-pw-weekly" onclick="paywallClick('week')">GET 1 WEEK</button>
-    </div>
-
-    <div class="price-card">
-      <h3 id="pw-monthly-title">1 MONTH</h3>
-      <div>
-        <span class="price-main">$25 USD</span>
-      </div>
-      <p class="pw-feature" id="pw-monthly-feature">+ Custom topics — build your own game.</p>
-      <button class="btn btn-fill price-btn" id="btn-pw-monthly" onclick="paywallClickMonthly()">GET 1 MONTH</button>
-    </div>
-  </div>
-
-  <button class="btn-ghost mt-2" id="btn-pw-back" onclick="goHome()">← Back to home</button>
-</section>
 
 <!-- ══════════════════════════════════════════
      MY TOPICS
@@ -1008,45 +892,8 @@
 
 </main>
 
-<!-- AUTH OVERLAY -->
-<div id="auth-overlay" class="hidden">
-  <div class="auth-inner">
-    <button class="btn-ghost" id="auth-back-btn" onclick="closeAuthModal()" style="text-align:left;width:auto;padding:0.5rem 0;">← Back</button>
-    <div style="margin-top:2.5rem;">
-      <h2 class="t-huge" id="auth-title">CREATE ACCOUNT</h2>
-      <div class="stack mt-4">
-        <div>
-          <label class="auth-label" id="auth-label-email">EMAIL</label>
-          <input type="email" id="auth-email" style="width:100%;display:block;" placeholder="you@example.com" autocomplete="email">
-        </div>
-        <div id="auth-username-wrap">
-          <label class="auth-label" id="auth-label-username">USERNAME</label>
-          <input type="text" id="auth-username" style="width:100%;display:block;" placeholder="yourname" autocomplete="username" maxlength="30">
-        </div>
-        <div>
-          <label class="auth-label" id="auth-label-password">PASSWORD</label>
-          <input type="password" id="auth-password" style="width:100%;display:block;" placeholder="min. 6 characters" autocomplete="current-password">
-        </div>
-        <p id="auth-error" class="t-small gray" style="min-height:1rem;"></p>
-        <button class="btn btn-fill" id="auth-submit" onclick="submitAuth()">CREATE ACCOUNT</button>
-        <p class="t-small gray center" style="line-height:2;">
-          <span id="auth-switch-text">Already have an account?</span>
-          <button class="btn-ghost" id="auth-switch-btn" onclick="switchAuthTab()" style="display:inline;width:auto;padding:0 0.25rem;">Log in</button>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
-/* ══════════════════════════════════════════
-   SUPABASE
-═══════════════════════════════════════════ */
-
-const SUPABASE_URL = 'https://aqllmugeuiyubejjjxop.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_d87hbQFzv2tKm4yvURJvEA_YTq__Wyk';
-const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
 /* ══════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════ */
@@ -1368,10 +1215,6 @@ const STANCE_MAP = {
   attack:          { en: 'ATTACK',           es: 'ATACAR' },
 };
 
-const FREE_ROUNDS = 10;
-const STRIPE_DAY_URL     = 'https://buy.stripe.com/aFaaEW3Hm0SDcURdPp5kk03';
-const STRIPE_WEEK_URL    = 'https://buy.stripe.com/7sYdR8dhWgRBg736mX5kk04';
-const STRIPE_MONTHLY_URL = 'https://buy.stripe.com/cNi14m7XCeJtcUR8v55kk05';
 
 /* ══════════════════════════════════════════
    TRANSLATIONS
@@ -1382,7 +1225,7 @@ const COPY = {
     quote: 'The test of a first-rate intelligence is the ability to hold two opposed ideas in mind at the same time.',
     tagline1: "It doesn't matter if you believe it.\nIt matters if you convince them.",
     tagline2: "No importa si lo crees.\nImporta si convences.",
-    landDesc: "A debate game where the point isn't to be right. It's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter.\n\nPlay Light with everyday topics, go Radical with the ones people actually fight about, or try Drama, where the topics get personal.",
+    landDesc: "A party game you play in person with friends and family. The point isn't to be right — it's to be convincing. Topics are random. Stances are random. Your real beliefs don't matter.\n\nPlay Light with everyday topics, go Radical with the ones people actually fight about, or try Drama, where the topics get personal.",
     credit: "Created by Sairy Romero",
     lightMode: 'LIGHT MODE',
     radicalMode: 'RADICAL MODE',
@@ -1395,10 +1238,10 @@ const COPY = {
     addPlayers: '+ Add players',
     makeYourGame: 'Build your own game',
     ctHeadline: 'BUILD YOUR\nOWN GAME.',
-    ctLead:  "1 month unlocks Custom Topics. Your own topics, built exactly the way you need them.",
+    ctLead:  "Your own topics, built exactly the way you need them.",
     ctBody:  "A group of friends can make it devastatingly personal. A therapist can use it to explore difficult conversations in a lighter setting. A law professor can turn the game into a case study exercise. A comedy writer can turn it into a full night of live prompts.",
     ctClose: "The game stays the same. The chaos becomes yours.",
-    ctCta: 'GET 1 MONTH · $25 USD',
+    ctCta: 'BUILD YOUR GAME',
     ctBack: '← Back',
     plTitle: 'PLAYERS',
     plSub: 'Enter names to track who convinces the most',
@@ -1424,22 +1267,6 @@ const COPY = {
     endGame: 'End game',
     convinced: 'CONVINCED',
     notConvinced: 'NOT\nCONVINCED',
-    pwRounds: n => `${n} OF ${FREE_ROUNDS} FREE ROUNDS USED`,
-    pwHeadline: "KEEP\nPLAYING.",
-    pwSub: 'Unlock unlimited rounds.',
-    pw24hTitle: '24 HOUR PASS',
-    pw24hHook: 'The price of one beer for the whole table.',
-    pw24hBtn: 'GET 24 HOURS',
-    pwWeeklyTitle: '1 WEEK',
-    pwWeeklyHook: 'Premium entertainment. Any group, all week.',
-    pwWeeklyBtn: 'GET 1 WEEK',
-    pwMonthlyTitle: '1 MONTH',
-    pwMonthlyHook: 'For classrooms, workshops, and teams.',
-    pwMonthlyFeature: '+ Custom topics. Build your own game.',
-    pwMonthlyBtn: 'GET 1 MONTH',
-    pwCustomTitle: 'WHAT CAN YOU DO WITH CUSTOM TOPICS?',
-    pwCustomBody: "The monthly plan unlocks Custom Topics, your own topics, built exactly the way you need them. A law professor can turn the game into a case study exercise: <em>'Defend the defendant in State v. Morrison.'</em> A group of friends can make it devastatingly personal: <em>'Argue that Carlos was right to ghost Ana,'</em> or <em>'Defend the time Diego showed up two hours late to his own birthday.'</em> A therapist can use it to explore difficult conversations in a low-stakes setting. A team lead can build a culture exercise out of real workplace dilemmas. The game stays the same. The chaos becomes yours.",
-    pwBack: '← Back to home',
     myTopicsBtn: 'MY TOPICS',
     myTopicsTitle: 'MY TOPICS',
     myTopicsCount: n => `${n} TOPIC${n === 1 ? '' : 'S'}`,
@@ -1485,7 +1312,7 @@ const COPY = {
     quote: 'La prueba de una inteligencia de primer nivel es la capacidad de sostener dos ideas opuestas en la mente al mismo tiempo.',
     tagline1: "No importa si lo crees.\nImporta si convences.",
     tagline2: "It doesn't matter if you believe it.\nIt matters if you convince them.",
-    landDesc: "Un juego de debate donde no se trata de tener razón. Se trata de convencer. Los temas son aleatorios. Las posturas son aleatorias. Tus creencias reales no importan.\n\nJuega en modo Light con temas cotidianos, en modo Radical con los que de verdad dividen, o en modo Drama, donde los temas se ponen personales.",
+    landDesc: "Un juego de mesa para jugar en persona con amigos y familia. No se trata de tener razón — se trata de convencer. Los temas son aleatorios. Las posturas son aleatorias. Tus creencias reales no importan.\n\nJuega en modo Light con temas cotidianos, en modo Radical con los que de verdad dividen, o en modo Drama, donde los temas se ponen personales.",
     credit: "Creado por Sairy Romero",
     lightMode: 'MODO LIGHT',
     radicalMode: 'MODO RADICAL',
@@ -1498,10 +1325,10 @@ const COPY = {
     addPlayers: '+ Agregar jugadores',
     makeYourGame: 'Haz tu propio juego',
     ctHeadline: 'HAZ TU\nPROPIO JUEGO.',
-    ctLead:  "1 mes desbloquea los Temas Personalizados. Tus propios temas, construidos exactamente como los necesitas.",
+    ctLead:  "Tus propios temas, construidos exactamente como los necesitas.",
     ctBody:  "Un grupo de amigos puede hacerlo mucho más personal. Una terapeuta puede usarlo para explorar conversaciones difíciles con más ligereza. Un profesor de derecho puede convertir el juego en un ejercicio de casos. Un comediante puede armar una noche entera de prompts en vivo.",
     ctClose: "El juego sigue siendo el mismo. El caos se vuelve tuyo.",
-    ctCta: '1 MES · $25 USD',
+    ctCta: 'ARMAR MI JUEGO',
     ctBack: '← Volver',
     plTitle: 'JUGADORES',
     plSub: 'Ingresa nombres para llevar el puntaje',
@@ -1527,22 +1354,6 @@ const COPY = {
     endGame: 'Terminar juego',
     convinced: 'CONVENCIÓ',
     notConvinced: 'NO\nCONVENCIÓ',
-    pwRounds: n => `${n} DE ${FREE_ROUNDS} RONDAS GRATUITAS USADAS`,
-    pwHeadline: "SIGUE\nJUGANDO.",
-    pwSub: 'Desbloquea rondas ilimitadas.',
-    pw24hTitle: 'PASE DE 24 HORAS',
-    pw24hHook: 'El precio de una cerveza para toda la mesa.',
-    pw24hBtn: 'OBTENER 24 HORAS',
-    pwWeeklyTitle: '1 SEMANA',
-    pwWeeklyHook: 'Entretenimiento premium. Cualquier grupo, toda la semana.',
-    pwWeeklyBtn: 'OBTENER 1 SEMANA',
-    pwMonthlyTitle: '1 MES',
-    pwMonthlyHook: 'Para clases, talleres y equipos de trabajo.',
-    pwMonthlyFeature: '+ Temas personalizados. Haz tu propio juego.',
-    pwMonthlyBtn: 'OBTENER 1 MES',
-    pwCustomTitle: '¿QUÉ PUEDES HACER CON LOS TEMAS PERSONALIZADOS?',
-    pwCustomBody: "El plan mensual desbloquea los Temas Personalizados, tus propios temas, construidos exactamente como los necesitas. Un profesor de derecho puede convertir el juego en un ejercicio de casos en vivo: <em>'Defiende al acusado en el caso González vs. Estado.'</em> Un grupo de amigos puede hacerlo devastadoramente personal: <em>'Argumenta que Carlos tenía razón de ghostear a Ana,'</em> o <em>'Defiende la vez que Diego llegó dos horas tarde a su propio cumpleaños.'</em> Una terapeuta puede usarlo para explorar conversaciones difíciles en un contexto de bajo riesgo. Un líder de equipo puede construir un ejercicio de cultura organizacional con dilemas reales de la oficina. El juego sigue siendo el mismo. El caos se vuelve tuyo.",
-    pwBack: '← Volver al inicio',
     myTopicsBtn: 'MIS TEMAS',
     myTopicsTitle: 'MIS TEMAS',
     myTopicsCount: n => `${n} TEMA${n === 1 ? '' : 'S'}`,
@@ -1612,240 +1423,17 @@ const G = {
    LOCALSTORAGE
 ═══════════════════════════════════════════ */
 
-function getRounds(mode)     { return parseInt(localStorage.getItem('cg_rounds_' + mode) || '0', 10); }
-function addRound(mode)      { const n = getRounds(mode) + 1; localStorage.setItem('cg_rounds_' + mode, n); return n; }
-function resetRounds(mode)   { localStorage.setItem('cg_rounds_' + mode, '0'); }
-
-function isMonthly()  { return !!localStorage.getItem('cg_monthly'); }
-function isDayPass()  { return parseInt(localStorage.getItem('cg_day_until')  || '0') > Date.now(); }
-function isWeekPass() { return parseInt(localStorage.getItem('cg_week_until') || '0') > Date.now(); }
-function isPaid()     { return isMonthly() || isWeekPass() || isDayPass(); }
-
-function setDayPass()  { localStorage.setItem('cg_day_until',  Date.now() + 24 * 60 * 60 * 1000); }
-function setWeekPass() { localStorage.setItem('cg_week_until', Date.now() + 7  * 24 * 60 * 60 * 1000); }
-function setMonthly()        {
-  localStorage.setItem('cg_monthly', Date.now());
-  _sb.auth.getUser().then(({ data: { user } }) => {
-    if (!user) return;
-    _sb.from('profiles').update({ is_monthly: true, monthly_since: new Date().toISOString() }).eq('id', user.id);
-  });
-}
-
 function getCustomTopics() {
   try { return JSON.parse(localStorage.getItem('cg_custom_topics') || '[]'); }
   catch { return []; }
 }
 function saveCustomTopics(arr) {
   localStorage.setItem('cg_custom_topics', JSON.stringify(arr));
-  _sb.auth.getUser().then(({ data: { user } }) => {
-    if (!user) return;
-    _sb.from('profiles').update({ custom_topics: arr }).eq('id', user.id);
-  });
 }
 
 function getTopicSource()    { return localStorage.getItem('cg_source') || 'mix'; }
-function setTopicSource(src) {
-  localStorage.setItem('cg_source', src);
-  _sb.auth.getUser().then(({ data: { user } }) => {
-    if (!user) return;
-    _sb.from('profiles').update({ topic_source: src }).eq('id', user.id);
-  });
-}
+function setTopicSource(src) { localStorage.setItem('cg_source', src); }
 
-/* ══════════════════════════════════════════
-   AUTH
-═══════════════════════════════════════════ */
-
-let _afterAuth = null;
-let _authTab   = 'signup';
-
-function requireAuth(cb) {
-  _afterAuth = cb;
-  openAuthModal('signup');
-}
-
-function openAuthModal(tab) {
-  _authTab = tab || 'signup';
-  renderAuthModal();
-  document.getElementById('auth-overlay').classList.remove('hidden');
-  window.scrollTo(0, 0);
-}
-
-function closeAuthModal() {
-  _afterAuth = null;
-  document.getElementById('auth-overlay').classList.add('hidden');
-}
-
-function switchAuthTab() {
-  _authTab = _authTab === 'signup' ? 'login' : 'signup';
-  document.getElementById('auth-error').textContent = '';
-  renderAuthModal();
-}
-
-function renderAuthModal() {
-  const isSignup = _authTab === 'signup';
-  const l = G.lang;
-  document.getElementById('auth-title').textContent     = isSignup ? (l === 'es' ? 'CREAR CUENTA' : 'CREATE ACCOUNT') : (l === 'es' ? 'INICIAR SESIÓN' : 'LOG IN');
-  document.getElementById('auth-back-btn').textContent  = l === 'es' ? '← Volver' : '← Back';
-  document.getElementById('auth-label-email').textContent    = 'EMAIL';
-  document.getElementById('auth-label-username').textContent = l === 'es' ? 'USUARIO' : 'USERNAME';
-  document.getElementById('auth-label-password').textContent = l === 'es' ? 'CONTRASEÑA' : 'PASSWORD';
-  document.getElementById('auth-username-wrap').style.display = isSignup ? 'block' : 'none';
-  document.getElementById('auth-submit').textContent    = isSignup ? (l === 'es' ? 'CREAR CUENTA' : 'CREATE ACCOUNT') : (l === 'es' ? 'ENTRAR' : 'LOG IN');
-  document.getElementById('auth-switch-text').textContent = isSignup ? (l === 'es' ? '¿Ya tienes cuenta?' : 'Already have an account?') : (l === 'es' ? '¿No tienes cuenta?' : "Don't have an account?");
-  document.getElementById('auth-switch-btn').textContent  = isSignup ? (l === 'es' ? 'Inicia sesión' : 'Log in') : (l === 'es' ? 'Regístrate' : 'Sign up');
-  document.getElementById('auth-email').placeholder    = 'you@example.com';
-  document.getElementById('auth-password').placeholder = l === 'es' ? 'mín. 6 caracteres' : 'min. 6 characters';
-  document.getElementById('auth-submit').disabled = false;
-}
-
-async function submitAuth() {
-  const email    = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const errorEl  = document.getElementById('auth-error');
-  const submitBtn = document.getElementById('auth-submit');
-  const l = G.lang;
-
-  if (!email || !password) {
-    errorEl.textContent = l === 'es' ? 'Completa todos los campos.' : 'Please fill in all fields.';
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = l === 'es' ? 'CARGANDO...' : 'LOADING...';
-  errorEl.textContent = '';
-
-  try {
-    if (_authTab === 'signup') {
-      const username = document.getElementById('auth-username').value.trim();
-      if (!username) {
-        errorEl.textContent = l === 'es' ? 'Elige un nombre de usuario.' : 'Please choose a username.';
-        renderAuthModal();
-        return;
-      }
-
-      const { data: signUpData, error: signUpErr } = await _sb.auth.signUp({
-        email, password, options: { data: { username } }
-      });
-      if (signUpErr) throw signUpErr;
-
-      if (!signUpData.session) {
-        // Email confirmation required
-        document.getElementById('auth-title').textContent = l === 'es' ? 'REVISA TU CORREO' : 'CHECK YOUR EMAIL';
-        errorEl.style.color = 'var(--white)';
-        errorEl.textContent = l === 'es'
-          ? 'Te enviamos un enlace. Confírmalo e inicia sesión aquí.'
-          : 'We sent you a confirmation link. Confirm it, then log in here.';
-        _authTab = 'login';
-        document.getElementById('auth-username-wrap').style.display = 'none';
-        renderAuthModal();
-        return;
-      }
-
-      // Auto-confirm path: upsert profile with username
-      const uid = signUpData.session.user.id;
-      await _sb.from('profiles').upsert({ id: uid, username }, { onConflict: 'id' });
-
-    } else {
-      const { error: signInErr } = await _sb.auth.signInWithPassword({ email, password });
-      if (signInErr) throw signInErr;
-    }
-
-    await syncFromSupabase();
-    closeAuthModal();
-    if (_afterAuth) { const cb = _afterAuth; _afterAuth = null; cb(); }
-
-  } catch (err) {
-    errorEl.style.color = 'var(--gray)';
-    errorEl.textContent = friendlyAuthError(err.message, l);
-    renderAuthModal();
-  }
-}
-
-function friendlyAuthError(msg, l) {
-  if (/already registered|already in use/i.test(msg))
-    return l === 'es' ? 'Este correo ya está registrado.' : 'This email is already registered.';
-  if (/invalid.{0,10}credentials|invalid login/i.test(msg))
-    return l === 'es' ? 'Correo o contraseña incorrectos.' : 'Incorrect email or password.';
-  if (/password.*6|at least 6/i.test(msg))
-    return l === 'es' ? 'La contraseña debe tener al menos 6 caracteres.' : 'Password must be at least 6 characters.';
-  return l === 'es' ? 'Algo salió mal. Intenta de nuevo.' : 'Something went wrong. Try again.';
-}
-
-async function syncFromSupabase() {
-  try {
-    const { data: { user } } = await _sb.auth.getUser();
-    if (!user) { updateAccountBtn(); return; }
-
-    const { data: profile } = await _sb.from('profiles').select('*').eq('id', user.id).single();
-    if (!profile) { updateAccountBtn(); return; }
-
-    if (profile.is_monthly) {
-      localStorage.setItem('cg_monthly', profile.monthly_since || Date.now());
-    } else {
-      localStorage.removeItem('cg_monthly');
-    }
-    if (Array.isArray(profile.custom_topics) && profile.custom_topics.length > 0) {
-      localStorage.setItem('cg_custom_topics', JSON.stringify(profile.custom_topics));
-    }
-    if (profile.topic_source) {
-      localStorage.setItem('cg_source', profile.topic_source);
-    }
-
-    updateAccountBtn();
-    updateLandingMonthlyBtn();
-  } catch (e) {}
-}
-
-async function updateAccountBtn() {
-  try {
-    const { data: { user } } = await _sb.auth.getUser();
-    const btn = document.getElementById('account-btn');
-    if (!btn) return;
-    if (user) {
-      const { data: profile } = await _sb.from('profiles').select('username').eq('id', user.id).single();
-      const name = profile?.username || user.email?.split('@')[0] || 'ACCOUNT';
-      btn.textContent = name.toUpperCase().slice(0, 10);
-      const el = document.getElementById('dropdown-username');
-      if (el) el.textContent = profile?.username || user.email || '';
-    } else {
-      btn.textContent = G.lang === 'es' ? 'ENTRAR' : 'LOG IN';
-      document.getElementById('account-dropdown').classList.add('hidden');
-    }
-  } catch (e) {}
-}
-
-function onAccountBtn() {
-  _sb.auth.getUser().then(({ data: { user } }) => {
-    if (user) {
-      document.getElementById('account-dropdown').classList.toggle('hidden');
-    } else {
-      openAuthModal('signup');
-    }
-  });
-}
-
-async function signOut() {
-  document.getElementById('account-dropdown').classList.add('hidden');
-  await _sb.auth.signOut();
-  localStorage.removeItem('cg_monthly');
-  localStorage.removeItem('cg_custom_topics');
-  localStorage.removeItem('cg_source');
-  updateAccountBtn();
-  updateLandingMonthlyBtn();
-  goHome();
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', e => {
-  const dropdown = document.getElementById('account-dropdown');
-  const btn = document.getElementById('account-btn');
-  if (dropdown && !dropdown.classList.contains('hidden')) {
-    if (!dropdown.contains(e.target) && e.target !== btn) {
-      dropdown.classList.add('hidden');
-    }
-  }
-});
 
 /* ══════════════════════════════════════════
    AUDIO  (Web Audio API — no external files)
@@ -1942,7 +1530,6 @@ function toggleLang() {
   G.lang = G.lang === 'en' ? 'es' : 'en';
   document.getElementById('lang-btn').textContent = G.lang === 'en' ? 'ES' : 'EN';
   refreshCopy();
-  updateAccountBtn();
 }
 
 function c(key, ...args) {
@@ -2000,35 +1587,20 @@ function refreshCopy() {
   setText('btn-next-rnd',   c('nextRound'));
   setText('btn-see-scores', c('seeScores'));
   setText('btn-end-sess',   c('endSession'));
-  // Paywall
-  setText('pw-headline',       c('pwHeadline'));
-  setText('pw-sub',            c('pwSub'));
-  setText('pw-24h-title',      c('pw24hTitle'));
-  setText('pw-24h-hook',       c('pw24hHook'));
-  setText('btn-pw-24h',        c('pw24hBtn'));
-  setText('pw-weekly-title',   c('pwWeeklyTitle'));
-  setText('pw-weekly-hook',    c('pwWeeklyHook'));
-  setText('btn-pw-weekly',     c('pwWeeklyBtn'));
-  setText('pw-monthly-title',   c('pwMonthlyTitle'));
-  setText('pw-monthly-hook',    c('pwMonthlyHook'));
-  setText('pw-monthly-feature', c('pwMonthlyFeature'));
-  setText('btn-pw-monthly',     c('pwMonthlyBtn'));
-  setText('btn-pw-back',        c('pwBack'));
   // Custom Topics screen
   document.getElementById('ct-headline').innerHTML = c('ctHeadline').replace('\n', '<br>');
   setText('ct-lead',  c('ctLead'));
   document.getElementById('ct-body').innerHTML = c('ctBody');
   setText('ct-close', c('ctClose'));
-  const ctaEl = document.getElementById('ct-cta');
-  if (ctaEl) { ctaEl.textContent = c('ctCta'); ctaEl.href = STRIPE_MONTHLY_URL || '#'; }
-  setText('ct-back', c('ctBack'));
+  setText('ct-cta',   c('ctCta'));
+  setText('ct-back',  c('ctBack'));
   // Scoreboard
   setText('sb-title',     c('sbTitle'));
   setText('sb-sub',       c('sbSub'));
   setText('btn-sb-home',  _peekMode ? c('keepPlaying') : c('playAgain'));
-  // My Topics (update if visible)
+  // My Topics
   updateLandingMonthlyBtn();
-  if (isMonthly()) renderMyTopics();
+  renderMyTopics();
 }
 
 /* ══════════════════════════════════════════
@@ -2110,7 +1682,6 @@ function skipPlayers() {
 
 function selectMode(mode) {
   G.mode = mode;
-  if (getRounds(mode) >= FREE_ROUNDS && !isPaid()) { showPaywall(); return; }
   if (mode === 'light') { beginGame('easy', 60); return; }
   showDifficultyScreen();
 }
@@ -2159,7 +1730,6 @@ function renderDiffCards() {
 
 function getPool() {
   const base = G.mode === 'light' ? LIGHT_TOPICS : G.mode === 'radical' ? RADICAL_TOPICS : DRAMA_TOPICS;
-  if (!isMonthly()) return base;
   const custom = getCustomTopics().filter(t => t.mode === G.mode);
   if (custom.length === 0) return base;
   const src = getTopicSource();
@@ -2328,20 +1898,12 @@ function renderTimer() {
 
 function endRound() {
   clearTimer();
-  addRound(G.mode);
   showVote();
 }
 
 function skipRound() {
   clearTimer();
   playSkip();
-  const count = addRound(G.mode);
-
-  if (count >= FREE_ROUNDS && !isPaid()) {
-    showPaywall();
-    return;
-  }
-
   G.currentTopic = pickTopic();
   G.currentStance = pickStance(G.currentTopic);
   runReveal(G.currentTopic, G.currentStance, startRound);
@@ -2383,13 +1945,6 @@ function castVote(convinced) {
 
 function nextRound() {
   if (G.players.length > 0) G.playerIdx = (G.playerIdx + 1) % G.players.length;
-
-  const count = getRounds(G.mode);
-  if (count >= FREE_ROUNDS && !isPaid()) {
-    showPaywall();
-    return;
-  }
-
   G.currentTopic = pickTopic();
   G.currentStance = pickStance(G.currentTopic);
   runReveal(G.currentTopic, G.currentStance, startRound);
@@ -2422,53 +1977,14 @@ function sbEnd() {
   goHome();
 }
 
-/* ══════════════════════════════════════════
-   PAYWALL
-═══════════════════════════════════════════ */
-
-function showPaywall() {
-  setText('pw-headline',     c('pwHeadline'));
-  setText('pw-sub',          c('pwSub'));
-  setText('pw-24h-title',    c('pw24hTitle'));
-  setText('pw-24h-hook',     c('pw24hHook'));
-  setText('btn-pw-24h',      c('pw24hBtn'));
-  setText('pw-weekly-title', c('pwWeeklyTitle'));
-  setText('pw-weekly-hook',  c('pwWeeklyHook'));
-  setText('btn-pw-weekly',   c('pwWeeklyBtn'));
-  setText('pw-monthly-title',c('pwMonthlyTitle'));
-  setText('pw-monthly-hook',    c('pwMonthlyHook'));
-  setText('pw-monthly-feature', c('pwMonthlyFeature'));
-  setText('btn-pw-monthly',     c('pwMonthlyBtn'));
-  setText('btn-pw-back',        c('pwBack'));
-  showScreen('screen-paywall');
-}
-
-function paywallClick(type) {
-  _sb.auth.getUser().then(({ data: { user } }) => {
-    if (!user) { requireAuth(() => paywallClick(type)); return; }
-    const url = type === 'week' ? STRIPE_WEEK_URL : STRIPE_DAY_URL;
-    window.open(url, '_blank');
-  });
-}
-
 function showCustomScreen() {
-  if (isMonthly()) { showMyTopics(); return; }
   document.getElementById('ct-headline').innerHTML = c('ctHeadline').replace('\n', '<br>');
   setText('ct-lead',  c('ctLead'));
   document.getElementById('ct-body').innerHTML = c('ctBody');
   setText('ct-close', c('ctClose'));
-  const cta = document.getElementById('ct-cta');
-  cta.textContent = c('ctCta');
-  cta.href = STRIPE_MONTHLY_URL || '#';
-  setText('ct-back', c('ctBack'));
+  setText('ct-cta',   c('ctCta'));
+  setText('ct-back',  c('ctBack'));
   showScreen('screen-custom');
-}
-
-function paywallClickMonthly() {
-  _sb.auth.getUser().then(({ data: { user } }) => {
-    if (!user) { requireAuth(() => paywallClickMonthly()); return; }
-    window.open(STRIPE_MONTHLY_URL, '_blank');
-  });
 }
 
 /* ══════════════════════════════════════════
@@ -2544,12 +2060,10 @@ function showScoreboard() {
 function updateLandingMonthlyBtn() {
   const btn = document.getElementById('btn-mytopics');
   if (!btn) return;
-  btn.style.display = isMonthly() ? 'block' : 'none';
   btn.textContent = c('myTopicsBtn');
 }
 
 function showMyTopics() {
-  if (!isMonthly()) { showCustomScreen(); return; }
   updateLandingMonthlyBtn();
   renderMyTopics();
   showScreen('screen-mytopics');
@@ -2668,19 +2182,7 @@ function deleteTopic(idx) {
 document.addEventListener('DOMContentLoaded', () => {
   refreshCopy();
   showScreen('screen-landing');
-  syncFromSupabase();
-  checkPaymentReturn();
 });
-
-function checkPaymentReturn() {
-  const params = new URLSearchParams(window.location.search);
-  const unlocked = params.get('unlocked');
-  if (!unlocked) return;
-  window.history.replaceState({}, '', window.location.pathname);
-  if (unlocked === 'day')   setDayPass();
-  if (unlocked === 'week')  setWeekPass();
-  if (unlocked === 'month') { setMonthly(); updateLandingMonthlyBtn(); }
-}
 </script>
 </body>
 </html>
